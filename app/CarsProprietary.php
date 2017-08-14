@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CarsPropriertary extends Model
+class CarsProprietary extends Model
 {
     //
 }
