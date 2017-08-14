@@ -15,6 +15,8 @@ class CreateAdmissionReasonsTable extends Migration
     {
         Schema::create('admission_reasons', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('reason',45)->unique();
+            $table->string('description',200)->nullable();
             $table->timestamps();
         });
     }

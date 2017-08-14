@@ -15,6 +15,8 @@ class CreateCarsStatesTable extends Migration
     {
         Schema::create('cars_states', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('state',45)->unique();
+            $table->string('description',200)->nullable();
             $table->timestamps();
         });
     }

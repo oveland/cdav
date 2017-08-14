@@ -15,7 +15,19 @@ class CreateCarsInventoriesTable extends Migration
     {
         Schema::create('cars_inventories', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('plate',7);
+            $table->string('engine_number',45);
+            $table->string('chassis_number',45);
+            $table->string('model',4);
+            $table->string('color',20);
+            $table->string('registration_city',45);
+            $table->integer('cars_state_id')->unsigned();
+            $table->integer('cars_proprietary_id')->unsigned();
             $table->timestamps();
+
+            /* table relations */
+            $table->foreign('cars_state_id')->references('id')->on('cars_states')->onDelete('cascade');
+            $table->foreign('cars_proprietary_id')->references('id')->on('cars_proprietaries')->onDelete('cascade');
         });
     }
 

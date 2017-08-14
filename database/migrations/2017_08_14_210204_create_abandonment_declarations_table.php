@@ -15,6 +15,8 @@ class CreateAbandonmentDeclarationsTable extends Migration
     {
         Schema::create('abandonment_declarations', function (Blueprint $table) {
             $table->increments('id');
+            $table->timestamp('date');
+            $table->string('resolution_number',45)->unique();
             $table->timestamps();
         });
     }

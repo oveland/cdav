@@ -15,6 +15,11 @@ class CreateCarsProprietariesTable extends Migration
     {
         Schema::create('cars_proprietaries', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('identity',20);
+            $table->string('name',45);
+            $table->string('address',45)->nullable();
+            $table->string('phone',45)->nullable();
+            $table->string('email',45)->nullable();
             $table->timestamps();
         });
     }
