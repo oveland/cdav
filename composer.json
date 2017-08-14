@@ -9,9 +9,7 @@
         "barryvdh/laravel-ide-helper": "^2.4",
         "doctrine/dbal": "^2.5",
         "laravel/framework": "5.4.*",
-        "laravel/tinker": "~1.0",
-        "maatwebsite/excel": "~2.1.0",
-        "sofa/eloquence": "~5.3"
+        "laravel/tinker": "~1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -45,8 +43,6 @@
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan ide-helper:generate",
-            "php artisan ide-helper:meta",
             "php artisan optimize"
         ]
     },
