@@ -21,5 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CarsLimitation extends Model
 {
-    //
+    public function car()
+    {
+        $this->belongsTo(CarsInventory::class);
+    }
 }

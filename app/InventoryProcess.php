@@ -25,5 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class InventoryProcess extends Model
 {
-    //
+    public function inventory()
+    {
+        $this->belongsTo(Inventory::class);
+    }
 }

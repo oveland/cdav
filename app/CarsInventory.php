@@ -33,5 +33,24 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CarsInventory extends Model
 {
-    //
+    public function state(){
+        $this->belongsTo(CarsState::class);
+    }
+
+    public function inventory(){
+        $this->belongsTo(Inventory::class);
+    }
+
+    public function proprietary(){
+        $this->belongsTo(CarsProprietary::class);
+    }
+
+    public function limitation(){
+        $this->hasOne(CarsLimitation::class);
+    }
+
+    public function abandonmentDeclaration()
+    {
+        $this->hasOne(AbandonmentDeclaration::class);
+    }
 }

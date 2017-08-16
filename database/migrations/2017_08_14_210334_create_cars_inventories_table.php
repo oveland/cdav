@@ -21,11 +21,13 @@ class CreateCarsInventoriesTable extends Migration
             $table->string('model',4);
             $table->string('color',20);
             $table->string('registration_city',45);
+            $table->integer('inventory_id')->unsigned();
             $table->integer('cars_state_id')->unsigned();
             $table->integer('cars_proprietary_id')->unsigned();
             $table->timestamps();
 
             /* table relations */
+            $table->foreign('inventory_id')->references('id')->on('inventories')->onDelete('cascade');
             $table->foreign('cars_state_id')->references('id')->on('cars_states')->onDelete('cascade');
             $table->foreign('cars_proprietary_id')->references('id')->on('cars_proprietaries')->onDelete('cascade');
         });

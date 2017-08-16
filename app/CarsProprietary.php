@@ -27,5 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CarsProprietary extends Model
 {
-    //
+    public function cars()
+    {
+        $this->hasMany(CarsInventory::class);
+    }
 }

@@ -21,5 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AdmissionReason extends Model
 {
-    //
+    public function inventories()
+    {
+        $this->hasMany(Inventory::class);
+    }
 }

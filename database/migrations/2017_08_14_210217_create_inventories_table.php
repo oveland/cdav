@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAbandonmentDeclarationsTable extends Migration
+class CreateInventoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,15 @@ class CreateAbandonmentDeclarationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('abandonment_declarations', function (Blueprint $table) {
+        Schema::create('inventories', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamp('date');
-            $table->string('resolution_number',45)->unique();
+            $table->string('number',100)->nullable();
+            $table->integer('admission_reason_id')->unsigned();
             $table->timestamps();
+
+            /* table relations */
+            $table->foreign('admission_reason_id')->references('id')->on('admission_reasons')->onDelete('cascade');
         });
     }
 
@@ -28,6 +32,6 @@ class CreateAbandonmentDeclarationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('abandonment_declarations');
+        Schema::dropIfExists('inventories');
     }
 }

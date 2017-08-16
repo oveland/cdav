@@ -17,7 +17,7 @@ class CreateCarsProprietariesTable extends Migration
             $table->increments('id');
             $table->string('identity',20);
             $table->string('name',45);
-            $table->string('address',45)->nullable();
+            $table->string('address',100)->nullable();
             $table->string('phone',45)->nullable();
             $table->string('email',45)->nullable();
             $table->timestamps();

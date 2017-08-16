@@ -27,5 +27,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Inventory extends Model
 {
-    //
+    public function admissionReason()
+    {
+        $this->belongsTo(AdmissionReason::class);
+    }
+
+    public function car()
+    {
+        $this->hasOne(CarsInventory::class);
+    }
+
+    public function inventoryProcesses()
+    {
+        $this->hasMany(InventoryProcess::class);
+    }
 }
