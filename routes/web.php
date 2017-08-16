@@ -19,3 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('admission-reasons', 'AdmissionReasonController');
+Route::resource('inventories', 'InventoryController');

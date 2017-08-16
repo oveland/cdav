@@ -9,17 +9,18 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $date
- * @property int $pendingJudicial
- * @property int $carsLimitationId
- * @property int $abandonmentDeclarationId
- * @property \Carbon\Carbon|null $createdAt
- * @property \Carbon\Carbon|null $updatedAt
- * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereAbandonmentDeclarationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereCarsLimitationId($value)
+ * @property int $phase
+ * @property int $pending_judicial
+ * @property int $inventory_id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\Inventory $inventory
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereInventoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess wherePendingJudicial($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess wherePhase($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -27,6 +28,6 @@ class InventoryProcess extends Model
 {
     public function inventory()
     {
-        $this->belongsTo(Inventory::class);
+        return $this->belongsTo(Inventory::class,'inventory_id');
     }
 }

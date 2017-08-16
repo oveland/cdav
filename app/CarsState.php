@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $state
  * @property string|null $description
- * @property \Carbon\Carbon|null $createdAt
- * @property \Carbon\Carbon|null $updatedAt
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\CarsInventory[] $cars
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsState whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsState whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsState whereId($value)
@@ -23,6 +24,6 @@ class CarsState extends Model
 {
     public function cars()
     {
-        $this->hasMany(CarsInventory::class);
+        return $this->hasMany(CarsInventory::class);
     }
 }

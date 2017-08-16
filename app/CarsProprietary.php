@@ -13,8 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $address
  * @property string|null $phone
  * @property string|null $email
- * @property \Carbon\Carbon|null $createdAt
- * @property \Carbon\Carbon|null $updatedAt
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\CarsInventory[] $cars
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsProprietary whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsProprietary whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsProprietary whereEmail($value)
@@ -29,6 +30,6 @@ class CarsProprietary extends Model
 {
     public function cars()
     {
-        $this->hasMany(CarsInventory::class);
+        return $this->hasMany(CarsInventory::class);
     }
 }

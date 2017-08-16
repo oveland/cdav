@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $reason
  * @property string|null $description
- * @property \Carbon\Carbon|null $createdAt
- * @property \Carbon\Carbon|null $updatedAt
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Inventory[] $inventories
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AdmissionReason whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AdmissionReason whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AdmissionReason whereId($value)
@@ -23,6 +24,6 @@ class AdmissionReason extends Model
 {
     public function inventories()
     {
-        $this->hasMany(Inventory::class);
+        return  $this->hasMany(Inventory::class);
     }
 }

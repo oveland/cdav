@@ -22,7 +22,7 @@
   "Remember Me": "Recuérdame",
   "Login": "Ingresar",
   "Log In": "Inicia sesión",
-  "Register": "Regístrate",
+  "Register": "Regístrar",
   "Type your credentials": "Ingresa tus credenciales",
   "Confirm Password": "Confirma Contraseña",
   "Name": "Nombre",
@@ -30,5 +30,19 @@
   "Date": "Fecha",
   "Time": "Hora",
   "Table":"Tabla",
-  "Address": "Dirección"
+  "Address": "Dirección",
+
+  "Inventories": "Inventario",
+  "Number": "Número",
+  "Admission Reason": "Razón de Ingreso",
+  "Plate": "Placa",
+  "State": "Estado",
+  "State": "Estado",
+  "Limitation": "Limitación",
+
+
+
+
+
+  "":""
 }

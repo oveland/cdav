@@ -9,13 +9,20 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $limitation
+ * @property string $issuing
+ * @property string $motive
  * @property string|null $description
- * @property \Carbon\Carbon|null $createdAt
- * @property \Carbon\Carbon|null $updatedAt
+ * @property int $cars_inventory_id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\CarsInventory $car
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereCarsInventoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereIssuing($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereLimitation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereMotive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -23,6 +30,6 @@ class CarsLimitation extends Model
 {
     public function car()
     {
-        $this->belongsTo(CarsInventory::class);
+        return $this->belongsTo(CarsInventory::class,'cars_inventory_id');
     }
 }

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\AdmissionReason;
+use App\CarsInventory;
+use App\Inventory;
 use Illuminate\Http\Request;
 
-class AdmissionReasonController extends Controller
+class InventoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,8 @@ class AdmissionReasonController extends Controller
      */
     public function index()
     {
-        return view('admission_reasons.index');
+        $inventories = Inventory::all();
+        return view('inventories.index',compact('inventories'));
     }
 
     /**
@@ -41,21 +43,21 @@ class AdmissionReasonController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\AdmissionReason  $admissionReason
+     * @param  \App\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function show(AdmissionReason $admissionReason = null)
+    public function show(Inventory $inventory)
     {
-
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\AdmissionReason  $admissionReason
+     * @param  \App\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function edit(AdmissionReason $admissionReason)
+    public function edit(Inventory $inventory)
     {
         //
     }
@@ -64,10 +66,10 @@ class AdmissionReasonController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\AdmissionReason  $admissionReason
+     * @param  \App\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AdmissionReason $admissionReason)
+    public function update(Request $request, Inventory $inventory)
     {
         //
     }
@@ -75,10 +77,10 @@ class AdmissionReasonController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\AdmissionReason  $admissionReason
+     * @param  \App\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AdmissionReason $admissionReason)
+    public function destroy(Inventory $inventory)
     {
         //
     }

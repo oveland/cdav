@@ -9,15 +9,21 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $plate
- * @property string $engineNumber
- * @property string $chassisNumber
+ * @property string $engine_number
+ * @property string $chassis_number
  * @property string $model
  * @property string $color
- * @property string $registrationCity
- * @property int $carsStateId
- * @property int $carsProprietaryId
- * @property \Carbon\Carbon|null $createdAt
- * @property \Carbon\Carbon|null $updatedAt
+ * @property string $registration_city
+ * @property int $inventory_id
+ * @property int $cars_state_id
+ * @property int $cars_proprietary_id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\AbandonmentDeclaration $abandonmentDeclaration
+ * @property-read \App\Inventory $inventory
+ * @property-read \App\CarsLimitation $limitation
+ * @property-read \App\CarsProprietary $proprietary
+ * @property-read \App\CarsState $state
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereCarsProprietaryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereCarsStateId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereChassisNumber($value)
@@ -25,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereEngineNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereInventoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereModel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory wherePlate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereRegistrationCity($value)
@@ -34,23 +41,23 @@ use Illuminate\Database\Eloquent\Model;
 class CarsInventory extends Model
 {
     public function state(){
-        $this->belongsTo(CarsState::class);
+        return $this->belongsTo(CarsState::class,'cars_state_id');
     }
 
     public function inventory(){
-        $this->belongsTo(Inventory::class);
+        return $this->belongsTo(Inventory::class, 'inventory_id');
     }
 
     public function proprietary(){
-        $this->belongsTo(CarsProprietary::class);
+        return $this->belongsTo(CarsProprietary::class,'cars_proprietary_id');
     }
 
     public function limitation(){
-        $this->hasOne(CarsLimitation::class);
+        return $this->hasOne(CarsLimitation::class);
     }
 
     public function abandonmentDeclaration()
     {
-        $this->hasOne(AbandonmentDeclaration::class);
+        return $this->hasOne(AbandonmentDeclaration::class);
     }
 }

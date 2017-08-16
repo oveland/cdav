@@ -27,6 +27,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string|null $rememberToken
  * @property \Carbon\Carbon|null $createdAt
  * @property \Carbon\Carbon|null $updatedAt
+ * @property string|null $rememberToken
+ * @property \Carbon\Carbon|null $createdAt
+ * @property \Carbon\Carbon|null $updatedAt
+ * @property string|null $remember_token
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
  */
 class User extends Authenticatable
 {
