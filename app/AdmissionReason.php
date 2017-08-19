@@ -22,6 +22,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AdmissionReason extends Model
 {
+    protected function getDateFormat()
+    {
+        return config('app.date_format');
+    }
+
     public function inventories()
     {
         return  $this->hasMany(Inventory::class);

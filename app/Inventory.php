@@ -28,6 +28,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Inventory extends Model
 {
+    protected function getDateFormat()
+    {
+        return config('app.date_format');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
