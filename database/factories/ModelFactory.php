@@ -31,7 +31,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
  */
 $factory->define(App\Inventory::class, function (Faker\Generator $faker) {
     return [
-        'date' => date('Y-m-d H:i:s'),
+        'date' => \Carbon\Carbon::now(),
         'number' => rand(1837682,4982398),
         'admission_reason_id' => array_random( \App\AdmissionReason::all()->pluck('id')->toArray() ),
     ];
@@ -77,7 +77,7 @@ $factory->define(App\CarsProprietary::class, function (Faker\Generator $faker) {
  */
 $factory->define(App\InventoryProcess::class, function (Faker\Generator $faker) {
     return [
-        'date' => date('Y-m-d H:i:s'),
+        'date' => \Carbon\Carbon::now(),
         'phase' => random_int(1,3)
     ];
 });
@@ -89,9 +89,7 @@ $factory->define(App\InventoryProcess::class, function (Faker\Generator $faker) 
 $factory->define(App\AbandonmentDeclaration::class, function (Faker\Generator $faker) {
     return [
         'date' => $faker->dateTime,
-        'resolution_number' => rand(32098,586979),
-        'created_at' => $faker->dateTime,
-        'updated_at' => $faker->dateTime
+        'resolution_number' => rand(32098,586979)
     ];
 });
 
@@ -104,8 +102,6 @@ $factory->define(App\CarsLimitation::class, function (Faker\Generator $faker) {
         'limitation' => 'Medida Provisional '.str_random(5),
         'issuing' => 'Juzgado Emisor '.str_random(5),
         'motive' => 'Motivo de la limitación',
-        'description' => 'Descripción opcional de la limitación',
-        'created_at' => date('Y-m-d H:i:s'),
-        'updated_at' => date('Y-m-d H:i:s'),
+        'description' => 'Descripción opcional de la limitación'
     ];
 });

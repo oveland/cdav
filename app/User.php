@@ -28,6 +28,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @mixin \Eloquent
  * @property \Carbon\Carbon $demo_to
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereDemoTo($value)
+ * @property int $is_admin
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereIsAdmin($value)
  */
 class User extends Authenticatable
 {
