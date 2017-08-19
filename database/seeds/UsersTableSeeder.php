@@ -14,18 +14,21 @@ class UsersTableSeeder extends Seeder
         factory(\App\User::class)->create([
             'name' => "Oscar Velásquez",
             'username' => "oveland",
+            'is_admin' => true,
             'password' => bcrypt("oveland")
         ]);
 
         factory(\App\User::class)->create([
             'name' => "Omar",
             'username' => "omar",
-            'password' => bcrypt("olatorre2017")
+            'is_admin' => true,
+            'password' => bcrypt("olatorre")
         ]);
 
         factory(\App\User::class)->create([
             'name' => "Usuario Demo",
             'username' => "demo",
+            'is_admin' => false,
             'password' => bcrypt("demo2017")
         ]);
     }
