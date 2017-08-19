@@ -42,6 +42,8 @@ class Inventory extends Model
         'date','number', 'admission_reason_id'
     ];
 
+    protected $dates = ['date'];
+
     public function admissionReason()
     {
         return $this->belongsTo(AdmissionReason::class, 'admission_reason_id');
