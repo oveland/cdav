@@ -24,6 +24,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CarsState extends Model
 {
+    protected function getDateFormat()
+    {
+        return config('app.date_format');
+    }
+
     public function cars()
     {
         return $this->hasMany(CarsInventory::class);

@@ -31,6 +31,11 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    protected function getDateFormat()
+    {
+        return config('app.date_format');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

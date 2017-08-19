@@ -28,6 +28,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CarsLimitation extends Model
 {
+    protected function getDateFormat()
+    {
+        return config('app.date_format');
+    }
+
     public function car()
     {
         return $this->belongsTo(CarsInventory::class,'cars_inventory_id');
