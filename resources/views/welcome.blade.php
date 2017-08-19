@@ -66,17 +66,23 @@
             }
 
             .title {
-                font-size: 84px;
+                font-size: 70px;
             }
 
-            .links > a {
+            .links > a, .links > button {
                 color: #636b6f;
-                padding: 0 25px;
+                padding: 0 10px;
                 font-size: 12px;
                 font-weight: 600;
                 letter-spacing: .1rem;
                 text-decoration: none;
                 text-transform: uppercase;
+                border: 0;
+                width: 250px;
+            }
+            button:focus{
+                outline:0 !important;
+                width: 300px;
             }
 
             .m-b-md {
@@ -100,11 +106,49 @@
                 -o-background-size: cover;
                 background-size: cover;
             }
+            .form-control{
+                background: transparent;
+                border: 2px solid gray;
+                border-radius: 10px;
+                height: 20px;
+                width: 300px;
+                color: #d0d0d0;
+                transition: all 1s !important;
+                padding:8px;
+            }
+            .form-control:active{
+                border: 2px solid #d6d6d6;
+            }.form-control:focus{
+                outline:0 !important;
+                border: 2px solid #d6d6d6;
+            }
+            .form-group label{
+                color: whitesmoke !important;
+                margin-bottom: 20px !important;
+            }
+            .help-block{
+                width: auto !important;
+                display: block;
+                margin-bottom: 20px;
+            }
+            .alert{
+                color: #b7baa2;
+                font-weight: bold;
+                margin-bottom: 20px;
+                text-transform: uppercase;
+                background: rgba(182, 71, 71, 0.35);
+                width: 350px;
+                margin: auto;
+                padding: 20px;
+            }
+            .form-horizontal{
+                margin-top: 10px !important;
+            }
         </style>
         <script>
             $(document).ready(function () {
                 $('body').fadeIn(2000);
-                $('.content').hide().removeClass('hide').slideDown(2000);
+                $('.content').hide().removeClass('hide').fadeIn(3000);
             })
         </script>
     </head>
@@ -121,14 +165,49 @@
                 </div>
             @endif
 
-            <div class="content hide" style="height: 300px">
+            <div class="content hide" style="height: auto">
                 <div class="title m-b-md">
                     <span class="white">CDAV</span> <span class="red">Gestión de Patios</span>
                 </div>
 
-                <div class="links" style="margin-top:100px; ">
-                    <a href="{{ url('/beta/inventories') }}" class="btn btn-lg btn-danger">Versión inicial BETA*</a>
-                </div>
+                @include('flash::message')
+
+                <form class="form-horizontal" method="POST" action="{{ route('login') }}">
+                    {{ csrf_field() }}
+
+                    @if ($errors->has('username'))
+                        <span class="help-block" style="width: 100%">
+                            <strong>{{ $errors->first('username') }}</strong>
+                        </span>
+                    @endif
+
+                    <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                        <label for="username" class="col-md-4 control-label">@lang('Username')</label>
+                        <div class="col-md-6">
+                            <input id="username" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
+                        </div>
+                    </div>
+                    <hr style="border-color: transparent">
+                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <label for="password" class="col-md-4 control-label">@lang('Password')</label>
+
+                        <div class="col-md-6">
+                            <input id="password" type="password" class="form-control" name="password" required>
+
+                            @if ($errors->has('password'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="links" style="margin-top:20px;margin-bottom: 100px">
+                        <button class="btn btn-lg btn-danger" onclick="document.form.submit">
+                            @lang('Login') <span style="font-size: 60%">Versión inicial BETA</span>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </body>

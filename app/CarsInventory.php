@@ -38,6 +38,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereRegistrationCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int $pending_judicial
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory wherePendingJudicial($value)
  */
 class CarsInventory extends Model
 {

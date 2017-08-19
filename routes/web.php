@@ -12,21 +12,29 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    if( Auth::guest() ){
+        return view('welcome');
+    }
+    return redirect(route('index-inventory'));
+})->name('home');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('beta')->group(function () {
-    Route::resource('/inventories', 'InventoryController');
+Route::group(['middleware' => ['check-demo-user']], function () {
+    Route::prefix('beta')->group(function () {
+        Route::resource('/inventories', 'InventoryController');
+        Route::get('/inventories', 'InventoryController@index')->name('index-inventory');
+        Route::post('/inventories', 'InventoryController@store')->name('store-inventory');
+        Route::get('/inventories/ajax/{action}', 'InventoryController@ajax')->name('ajax-inventory');
 
-    Route::post('/inventories', 'InventoryController@store')->name('store-inventory');
-
-    Route::get('/inventories/ajax/{action}', 'InventoryController@ajax')->name('ajax-inventory');
-
-    Route::get('/{file}', function($file){
-        return redirect(url("/demo/$file"));
+        /* For demo pages */
+        Route::get('/{file}', function($file){
+            if( Auth::guest() ){
+                return view('welcome');
+            }
+            return redirect(url("/demo/$file"));
+        });
     });
 });

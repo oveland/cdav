@@ -87,6 +87,9 @@ License: You must have a valid license purchased only from themeforest(the above
            data-target=".navbar-collapse"> </a>
         <!-- END RESPONSIVE MENU TOGGLER -->
         <!-- BEGIN TOP NAVIGATION MENU -->
+        <div class="col-md-offset-3 col-sm-6 col-md-3 col-xs-12">
+            @include('flash::message')
+        </div>
         <div class="top-menu">
             <ul class="nav navbar-nav pull-right">
                 <!-- BEGIN NOTIFICATION DROPDOWN -->
@@ -95,7 +98,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                        data-close-others="true">
                         <i class="icon-bell"></i>
-                        <span class="badge badge-default"> 7 </span>
+                        <span class="badge badge-default"> 7  </span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="external">
@@ -429,8 +432,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <i class="icon-lock"></i> Lock Screen </a>
                         </li>
                         <li>
-                            <a href="page_user_login_1.html">
-                                <i class="icon-key"></i> Log Out </a>
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="icon-key"></i> @lang('Logout')
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hide">
+                                {{ csrf_field() }}
+                            </form>
+
                         </li>
                     </ul>
                 </li>

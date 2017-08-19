@@ -26,6 +26,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUsername($value)
  * @mixin \Eloquent
+ * @property \Carbon\Carbon $demo_to
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereDemoTo($value)
  */
 class User extends Authenticatable
 {
@@ -35,6 +37,8 @@ class User extends Authenticatable
     {
         return config('app.date_format');
     }
+
+    protected $dates = ['demo_to'];
 
     /**
      * The attributes that are mass assignable.

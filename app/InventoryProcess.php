@@ -23,6 +23,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess wherePhase($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess phase1()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess phase2()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess phase3()
  */
 class InventoryProcess extends Model
 {
