@@ -29,11 +29,9 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
  */
 $factory->define(App\Inventory::class, function (Faker\Generator $faker) {
     return [
-        'date' => $faker->dateTime,
+        'date' => date('Y-m-d H:i:s'),
         'number' => rand(1837682,4982398),
         'admission_reason_id' => array_random( \App\AdmissionReason::all()->pluck('id')->toArray() ),
-        'created_at' => $faker->dateTime,
-        'updated_at' => $faker->dateTime
     ];
 });
 
@@ -43,18 +41,17 @@ $factory->define(App\Inventory::class, function (Faker\Generator $faker) {
  */
 $factory->define(App\CarsInventory::class, function (Faker\Generator $faker) {
     return [
-        'plate' => str_random(3).'-'.rand(100,999),
-        'engine_number' => $faker->md5,
-        'chassis_number' => $faker->uuid,
-        'model' => $faker->year($max = 'now'),
+        'plate' => strtoupper(str_random(3).'-'.rand(100,999)),
+        'engine_number' => str_random(8),
+        'chassis_number' => rand(10211230,99912331),
+        'model' => rand(1990,2030),
         'color' => $faker->colorName,
         'registration_city' => $faker->city,
+        'pending_judicial' => false,
         'cars_state_id' => array_random( \App\CarsState::all()->pluck('id')->toArray() ),
         'cars_proprietary_id' => function () {
             return factory(App\CarsProprietary::class)->create()->id;
-        },
-        'created_at' => $faker->dateTime,
-        'updated_at' => $faker->dateTime
+        }
     ];
 });
 
@@ -68,9 +65,7 @@ $factory->define(App\CarsProprietary::class, function (Faker\Generator $faker) {
         'name' => $faker->firstName().' '.$faker->lastName,
         'address' => $faker->address,
         'phone' => $faker->phoneNumber,
-        'email' => $faker->email,
-        'created_at' => $faker->dateTime,
-        'updated_at' => $faker->dateTime
+        'email' => $faker->email
     ];
 });
 
@@ -80,11 +75,8 @@ $factory->define(App\CarsProprietary::class, function (Faker\Generator $faker) {
  */
 $factory->define(App\InventoryProcess::class, function (Faker\Generator $faker) {
     return [
-        'date' => $faker->dateTime,
-        'phase' => 1,
-        'pending_judicial' => false,
-        'created_at' => $faker->dateTime,
-        'updated_at' => $faker->dateTime
+        'date' => date('Y-m-d H:i:s'),
+        'phase' => random_int(1,3)
     ];
 });
 

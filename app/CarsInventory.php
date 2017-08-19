@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $cars_proprietary_id
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property mixed $abandonment_declaration
  * @property-read \App\AbandonmentDeclaration $abandonmentDeclaration
  * @property-read \App\Inventory $inventory
  * @property-read \App\CarsLimitation $limitation
@@ -40,19 +41,32 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CarsInventory extends Model
 {
-    public function state(){
-        return $this->belongsTo(CarsState::class,'cars_state_id');
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'plate', 'engine_number', 'chassis_number', 'model', 'color', 'registration_city', 'pending_judicial', 'cars_state_id'
+    ];
+
+    public function state()
+    {
+        return $this->belongsTo(CarsState::class, 'cars_state_id');
     }
 
-    public function inventory(){
+    public function inventory()
+    {
         return $this->belongsTo(Inventory::class, 'inventory_id');
     }
 
-    public function proprietary(){
-        return $this->belongsTo(CarsProprietary::class,'cars_proprietary_id');
+    public function proprietary()
+    {
+        return $this->belongsTo(CarsProprietary::class, 'cars_proprietary_id');
     }
 
-    public function limitation(){
+    public function limitation()
+    {
         return $this->hasOne(CarsLimitation::class);
     }
 

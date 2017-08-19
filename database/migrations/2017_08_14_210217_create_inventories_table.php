@@ -15,7 +15,7 @@ class CreateInventoriesTable extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('date');
+            $table->timestamp('date')->useCurrent();
             $table->string('number',100)->nullable();
             $table->integer('admission_reason_id')->unsigned();
             $table->timestamps();

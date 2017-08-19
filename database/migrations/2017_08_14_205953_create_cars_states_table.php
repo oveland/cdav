@@ -17,6 +17,7 @@ class CreateCarsStatesTable extends Migration
             $table->increments('id');
             $table->string('state',45)->unique();
             $table->string('description',200)->nullable();
+            $table->string('color_class',50)->nullable();
             $table->timestamps();
         });
     }

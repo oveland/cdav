@@ -5,13 +5,33 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>CDAV Gestión de Patios</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
+        <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
         <!-- Styles -->
         <style>
+            .hide{
+                display: none;
+            }
+            .btn-danger{
+                background: darkred;
+                padding: 15px !important;
+                color: #bdbdbd !important;
+                -webkit-transition: all 0.3s !important; /* Safari */
+                transition:  all 0.3s !important; /* Safari */
+            }
+
+            .btn-danger:hover{
+                background: #400000;
+                padding: 15px;
+                color: white !important;
+                -webkit-box-shadow: 0px -1px 8px 2px rgba(0,0,0,1);
+                -moz-box-shadow: 0px -1px 8px 2px rgba(0,0,0,1);
+                box-shadow: 0px -1px 8px 2px rgba(0,0,0,1);
+            }
+
             html, body {
                 background-color: #fff;
                 color: #636b6f;
@@ -62,12 +82,36 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+            .white{
+                color: white !important;
+            }
+            .red{
+                color: #f30327 !important;
+                text-shadow: 1px 1px 8px rgba(255, 78, 0, 1);
+            }
+
+            body{
+                overflow-x: hidden!important;
+                min-height: 100%;
+                z-index: -2;
+                background: url(/img/banner.jpg) no-repeat top center fixed;
+                -moz-background-size: cover;
+                -webkit-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
         </style>
+        <script>
+            $(document).ready(function () {
+                $('body').fadeIn(2000);
+                $('.content').hide().removeClass('hide').slideDown(2000);
+            })
+        </script>
     </head>
-    <body>
+    <body class="hide">
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
-                <div class="top-right links">
+                <div class="top-right links hide">
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
                     @else
@@ -77,17 +121,13 @@
                 </div>
             @endif
 
-            <div class="content">
+            <div class="content hide" style="height: 300px">
                 <div class="title m-b-md">
-                    Laravel
+                    <span class="white">CDAV</span> <span class="red">Gestión de Patios</span>
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="links" style="margin-top:100px; ">
+                    <a href="{{ url('/beta/inventories') }}" class="btn btn-lg btn-danger">Versión inicial BETA*</a>
                 </div>
             </div>
         </div>

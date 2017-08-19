@@ -18,5 +18,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('admission-reasons', 'AdmissionReasonController');
-Route::resource('inventories', 'InventoryController');
+
+Route::prefix('beta')->group(function () {
+    Route::resource('/inventories', 'InventoryController');
+
+    Route::post('/inventories', 'InventoryController@store')->name('store-inventory');
+
+    Route::get('/inventories/ajax/{action}', 'InventoryController@ajax')->name('ajax-inventory');
+
+    Route::get('/{file}', function($file){
+        return redirect(url("/demo/$file"));
+    });
+});

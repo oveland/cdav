@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $admission_reason_id
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property mixed $admission_reason
+ * @property mixed $inventory_processes
  * @property-read \App\AdmissionReason $admissionReason
  * @property-read \App\CarsInventory $car
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\InventoryProcess[] $inventoryProcesses
@@ -26,9 +28,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Inventory extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'date','number', 'admission_reason_id'
+    ];
+
     public function admissionReason()
     {
-        return $this->belongsTo(AdmissionReason::class,'admission_reason_id');
+        return $this->belongsTo(AdmissionReason::class, 'admission_reason_id');
     }
 
     public function car()
@@ -38,6 +49,6 @@ class Inventory extends Model
 
     public function inventoryProcesses()
     {
-        return $this->hasMany(InventoryProcess::class);
+        return $this->hasOne(InventoryProcess::class);
     }
 }

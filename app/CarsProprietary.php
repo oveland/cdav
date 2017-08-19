@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $email
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\CarsInventory[] $cars
+ * @property mixed $car
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsProprietary whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsProprietary whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsProprietary whereEmail($value)
@@ -28,8 +28,17 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CarsProprietary extends Model
 {
-    public function cars()
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'identity', 'name', 'address', 'phone', 'email'
+    ];
+
+    public function car()
     {
-        return $this->hasMany(CarsInventory::class);
+        return $this->hasOne(CarsInventory::class);
     }
 }

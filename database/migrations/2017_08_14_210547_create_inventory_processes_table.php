@@ -15,10 +15,9 @@ class CreateInventoryProcessesTable extends Migration
     {
         Schema::create('inventory_processes', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('date');
+            $table->timestamp('date')->useCurrent();
             $table->integer('phase');
-            $table->boolean('pending_judicial')->default(false);
-            $table->integer('inventory_id')->unsigned();
+            $table->integer('inventory_id')->unsigned()->unique();
             $table->timestamps();
 
             /* table relations */

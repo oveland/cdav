@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsState whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsState whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $color_class
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsState whereColorClass($value)
  */
 class CarsState extends Model
 {

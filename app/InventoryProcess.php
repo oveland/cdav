@@ -26,8 +26,50 @@ use Illuminate\Database\Eloquent\Model;
  */
 class InventoryProcess extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'date','phase'
+    ];
+
     public function inventory()
     {
         return $this->belongsTo(Inventory::class,'inventory_id');
+    }
+
+    /**
+     * Scope a query to Inventories phase 1.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePhase1($query)
+    {
+        return $query->where('phase', '=', 1);
+    }
+
+    /**
+     * Scope a query to Inventories phase 2.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePhase2($query)
+    {
+        return $query->where('phase', '=', 2);
+    }
+
+    /**
+     * Scope a query to Inventories phase 3.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePhase3($query)
+    {
+        return $query->where('phase', '=', 3);
     }
 }
