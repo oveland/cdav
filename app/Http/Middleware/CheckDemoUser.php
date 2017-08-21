@@ -21,9 +21,8 @@ class CheckDemoUser
         }
 
         if(!\Auth::user()->is_admin){
-            $demoTo = \Auth::user()->demo_to;
+            $demoTo = Carbon::createFromFormat(config('app.date_format'),\Auth::user()->demo_to.' 00:00:00');
             $days = Carbon::today()->diffInDays($demoTo,false);
-
             if ($days > 0) {
                 $message = flash("<i class='fa fa-exclamation-circle'></i>  Demo disponible por " . $days . " días");
                 if ($days <= 1) {

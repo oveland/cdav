@@ -40,7 +40,7 @@ class User extends Authenticatable
         return config('app.date_format');
     }
 
-    protected $dates = ['demo_to'];
+    //protected $dates = ['demo_to'];
 
     /**
      * The attributes that are mass assignable.
