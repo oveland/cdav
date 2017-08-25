@@ -100,7 +100,7 @@
                 overflow-x: hidden!important;
                 min-height: 100%;
                 z-index: -2;
-                background: url(/img/banner.jpg) no-repeat top center fixed;
+                background: url(banner.jpg) no-repeat top center fixed;
                 -moz-background-size: cover;
                 -webkit-background-size: cover;
                 -o-background-size: cover;
