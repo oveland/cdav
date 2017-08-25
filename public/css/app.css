@@ -903,21 +903,20 @@ table.dataTable thead .sorting_desc {
 .animated {
     -webkit-transition: all 2s !important;
     transition: all 2s !important;
-
 }
 .phase-inventory{
-    -webkit-transition: width 1s, font-size 0.3s, background 0.5s !important; /* Safari */
-    transition:  width 1s, font-size 0.3s, background 0.5s !important;
+    -webkit-transition: width 1s, font-size 0.3s, background 0.5s, color 1s !important; /* Safari */
+    transition:  width 1s, font-size 0.3s, background 0.5s, color 1s !important;
 }
 
 .mt-step-number {
     border-radius: 40% !important;
 }
 .phase-inventory:hover{
-    color:red !important;
     background: rgba(165, 165, 165, 0.13);
     cursor:pointer;
     font-size:105% !important;
+    color:#414141 !important;
 }
 .page-logo a{
     border-bottom-color: #efeff1;
@@ -925,4 +924,50 @@ table.dataTable thead .sorting_desc {
 }
 .click{
     cursor: pointer !important;
+}
+.mt-step-col, .mt-step-title, .mt-step-content{
+    color:#b6b6b2 !important;
+}
+.mt-step-col:hover, .mt-step-title:hover{
+    color:#414141 !important;
+}
+.dropzone{
+    width: 100%;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+.cbp-popup-wrap {
+    height: 100%;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    display: none;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    z-index: 10000 !important;
+    padding: 0 10px;
+}
+
+.cbp-popup-lightbox-bottom{
+    margin-top: 5px !important;
+    padding-top: 5px !important;
+    border-top: 1px solid gray !important;
+}
+.image-actions {
+    bottom: 50px !important;
+    position: relative;
+    z-index: 100000;
+}
+.image-actions a, .image-actions button{
+    padding-top: 10px !important;
+    margin-bottom: 10px;
+}
+.image-actions-preview {
+    bottom: 0 !important;
+    right: -50px !important;
+    border-radius: 30px;
+    background: rgba(211, 211, 211, 0.23);
+    height: 35px;
 }

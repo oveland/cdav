@@ -38,7 +38,8 @@
                 </td>
                 <td>{{ $inventory->car->limitation?$inventory->car->limitation->limitation:__('Nothing')}}</td>
                 <td class="text-center">
-                    <button data-action="{{ route('ajax-inventory','loadCarProcessView') }}?id={{ $inventory->id }}" class="ajax-btn-car-process popovers btn btn-circle green-haze btn-outline sbold uppercase"
+                    <button data-action="{{ route('inventory-ajax','loadCarProcessView') }}?id={{ $inventory->id }}" class="ajax-btn-car-process popovers btn btn-circle green-haze btn-outline sbold uppercase"
+                            data-modal="#ajax-modal-car-detail"
                             data-container="body" data-trigger="hover" data-placement="bottom" data-content="Ver detalle/actualizar estado" data-original-title="Acciones">
                         <i class="fa fa-database" aria-hidden="true"></i>
                     </button>

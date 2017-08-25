@@ -38,13 +38,10 @@
                 </td>
                 <td>{{ $inventory->car->limitation?$inventory->car->limitation->limitation:__('Nothing')}}</td>
                 <td class="text-center">
-                    <button data-action="{{ route('ajax-inventory','loadCarProcessView') }}?id={{ $inventory->id }}" class="ajax-btn-car-process popovers btn btn-circle green-haze btn-outline sbold uppercase"
+                    <button data-action="{{ route('inventory-ajax','loadCarProcessView') }}?id={{ $inventory->id }}" class="ajax-btn-car-process popovers btn btn-circle green-haze btn-outline sbold uppercase"
+                            data-modal="#ajax-modal-car-detail"
                             data-container="body" data-trigger="hover" data-placement="bottom" data-content="Ver detalle/actualizar estado" data-original-title="Acciones">
                         <i class="fa fa-database" aria-hidden="true"></i>
-                    </button>
-                    <button data-action="{{ route('ajax-inventory','processToPhase3') }}?id={{ $inventoryProcess->id }}" class="ajax-btn-process-next-phase process popovers btn btn-circle red-haze btn-outline sbold uppercase"
-                            data-container="body" data-trigger="hover" data-placement="bottom" data-content="@lang('Process to phase') 3" data-original-title="@lang('Process')">
-                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                     </button>
                 </td>
             </tr>

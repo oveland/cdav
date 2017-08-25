@@ -32,8 +32,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <title>{{ config('app.name', 'CDAV Gestión de Patios') }}</title>
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"
-          type="text/css"/>
+    <link href="{{ asset('fonts/Google_Open_Sand.css') }}" rel="stylesheet" type="text/css"/>
 
     <link href="{{asset('assets/global/plugins/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet"
           type="text/css"/>
@@ -41,9 +40,9 @@ License: You must have a valid license purchased only from themeforest(the above
           type="text/css"/>
     <link href="{{asset('assets/global/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('assets/global/plugins/uniform/css/uniform.default.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="{{asset('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css')}}" rel="stylesheet"
-          type="text/css"/>
+    <link href="{{asset('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css')}}" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
+
     <!-- BEGIN THEME GLOBAL STYLES -->
     <link href="{{asset('assets/global/css/components-md.min.css')}}" rel="stylesheet" id="style_components"
           type="text/css"/>
@@ -55,10 +54,10 @@ License: You must have a valid license purchased only from themeforest(the above
           id="style_color"/>
     <link href="{{asset('assets/layouts/layout/css/custom.min.css')}}" rel="stylesheet" type="text/css"/>
     <!-- END THEME LAYOUT STYLES -->
-    <link rel="shortcut icon" href="favicon.ico"/>
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
 
     <!-- BEGIN "GLOBAL" PAGE LEVEL PLUGINS -->
-    <link href="../assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{asset('assets/global/plugins/bootstrap-toastr/toastr.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- END "GLOBAL" PAGE LEVEL PLUGINS -->
 
     <!-- Styles -->
@@ -1069,7 +1068,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <li class="heading">
                     <h3 class="uppercase">Layouts</h3>
                 </li>
-                <li class="nav-item  active open">
+                <li class="nav-item">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-layers"></i>
                         <span class="title">Page Layouts</span>
@@ -1077,12 +1076,12 @@ License: You must have a valid license purchased only from themeforest(the above
                         <span class="arrow open"></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="nav-item  ">
+                        <li class="nav-item">
                             <a href="layout_blank_page.html" class="nav-link ">
                                 <span class="title">Blank Page</span>
                             </a>
                         </li>
-                        <li class="nav-item  ">
+                        <li class="nav-item">
                             <a href="layout_classic_page_head.html" class="nav-link ">
                                 <span class="title">Classic Page Head</span>
                             </a>
@@ -1112,7 +1111,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <span class="title">Header Language Bar</span>
                             </a>
                         </li>
-                        <li class="nav-item  active open">
+                        <li class="nav-item">
                             <a href="layout_footer_fixed.html" class="nav-link ">
                                 <span class="title">Fixed Footer</span>
                                 <span class="selected"></span>

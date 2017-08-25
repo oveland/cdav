@@ -15,7 +15,7 @@ Route::get('/', function () {
     if( Auth::guest() ){
         return view('welcome');
     }
-    return redirect(route('index-inventory'));
+    return redirect(route('inventory-index'));
 })->name('home');
 
 Auth::routes();
@@ -24,10 +24,18 @@ Auth::routes();
 
 Route::group(['middleware' => ['check-demo-user']], function () {
     Route::prefix('beta')->group(function () {
-        Route::resource('/inventories', 'InventoryController');
-        Route::get('/inventories', 'InventoryController@index')->name('index-inventory');
-        Route::post('/inventories', 'InventoryController@store')->name('store-inventory');
-        Route::get('/inventories/ajax/{action}', 'InventoryController@ajax')->name('ajax-inventory');
+        Route::prefix('inventories')->group(function () {
+            Route::get('/', 'InventoryController@index')->name('inventory-index');
+            Route::post('/', 'InventoryController@store')->name('inventory-store');
+            Route::get('ajax/{action}', 'InventoryController@ajax')->name('inventory-ajax');
+            Route::post('{inventory}/files', 'InventoryController@storeFiles')->name('inventory-files');
+            Route::get('{inventory}/files', 'InventoryController@refreshPanelFiles')->name('inventory-files-refresh');
+            Route::get('images/{inventoryFile}', 'InventoryController@getImageFile')->name('inventory-image-file');
+            Route::get('file/{inventoryFile}/download', 'InventoryController@downloadFile')->name('inventory-file-download');
+            Route::get('file/{inventoryFile}/preview', 'InventoryController@previewFile')->name('inventory-file-preview');
+            Route::get('file/{inventoryFile}/delete', 'InventoryController@deleteFormFile')->name('inventory-file-form-delete');
+            Route::delete('file/{inventoryFile}/delete', 'InventoryController@deleteFile')->name('inventory-file-delete');
+        });
 
         /* For demo pages */
         Route::get('/{file}', function($file){

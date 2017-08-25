@@ -1,4 +1,4 @@
-<form action="{{ route('store-inventory') }}" class="form" id="form-create-inventory" method="post">
+<form action="{{ route('inventory-store') }}" class="form" id="form-create-inventory" method="post">
     {{ csrf_field() }}
     <div class="portlet light bordered">
         <div class="portlet-title">
@@ -22,7 +22,7 @@
                         <div class="form-group form-md-line-input form-md-floating-label">
                             <input class="form-control" name="number" value="">
                             <label for="number">@lang('Number')</label>
-                            <span class="help-block">@lang('Inventary Number')</span>
+                            <span class="help-block">@lang('Inventory Number')</span>
                         </div>
 
                         <div class="form-group form-md-line-input form-md-floating-label has-info">
@@ -34,6 +34,21 @@
                                 <option value="4">Ingreso por Embargo</option>
                             </select>
                             <label for="admission_reason_id">@lang('Admission Reason')</label>
+                        </div>
+
+                        <div class="form-group form-md-line-input form-md-floating-label has-info">
+                            <div class="form-group form-md-checkboxes">
+                                <label class="hide">@lang('Judicial Pending')</label>
+                                <div class="md-checkbox-list">
+                                    <div class="md-checkbox">
+                                        <input type="checkbox" id="checkbox1" class="md-check" name="pending_judicial">
+                                        <label for="checkbox1">
+                                            <span class="inc"></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> @lang('Judicial Pending') </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

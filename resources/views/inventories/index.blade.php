@@ -3,13 +3,20 @@
 @section('stylesheets')
     <!--||| ********** BEGIN PAGE LEVEL PLUGINS ********** -->
     <!-- MODALS -->
-    <link href="../assets/global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/global/plugins/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/global/plugins/bootstrap-modal/css/bootstrap-modal.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- DATA TABLES -->
-    <link href="../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
 
+    <!-- DROP ZONE -->
+    <link href="{{ asset('assets/global/plugins/dropzone/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/global/plugins/dropzone/basic.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <!-- PORTFOLIO 4 - IMAGES -->
+    <link href="{{ asset('assets/global/plugins/cubeportfolio/css/cubeportfolio.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/pages/css/portfolio.min.css') }}" rel="stylesheet" type="text/css" />
     <!--||| ********** END PAGE LEVEL PLUGINS ********** -->
 @endsection
 
@@ -65,13 +72,13 @@
                         <div class="col-md-12">
                             <div class="tab-content">
                                 <div id="phase-1" class="tab-pane fade in active">
-                                    <div class="portlet light bordered phase-container" data-url="{{ route('ajax-inventory','loadPhase1Table') }}"></div>
+                                    <div class="portlet light bordered phase-container" data-url="{{ route('inventory-ajax','loadPhase1Table') }}"></div>
                                 </div>
                                 <div id="phase-2" class="tab-pane fade">
-                                    <div class="portlet light bordered phase-container" data-url="{{ route('ajax-inventory','loadPhase2Table') }}"></div>
+                                    <div class="portlet light bordered phase-container" data-url="{{ route('inventory-ajax','loadPhase2Table') }}"></div>
                                 </div>
                                 <div id="phase-3" class="tab-pane fade">
-                                    <div class="portlet light bordered phase-container" data-url="{{ route('ajax-inventory','loadPhase3Table') }}"></div>
+                                    <div class="portlet light bordered phase-container" data-url="{{ route('inventory-ajax','loadPhase3Table') }}"></div>
                                 </div>
                             </div>
                             <hr>
@@ -82,25 +89,52 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12 exa"></div>
+    </div>
+
     <div id="ajax-modal-car-process" class="bootbox modal fade modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="860"></div>
+    <div id="ajax-modal-car-detail" class="bootbox modal fade modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="1000"></div>
+    <div id="ajax-modal-delete-file" class="bootbox modal fade modal-scroll" tabindex="-1"></div>
+
 @endsection
 @section('javascripts')
 
     <!--||| ********** BEGIN PAGE LEVEL PLUGINS ********** -->
     <!-- MODALS -->
-    <script src="../assets/global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/global/plugins/bootstrap-modal/js/bootstrap-modal.js') }}" type="text/javascript"></script>
 
     <!-- DATA TABLES -->
-    <script src="../assets/global/scripts/datatable.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
 
     <!-- FORM VALIDATIONS -->
-    <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/global/plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/global/plugins/jquery-validation/js/additional-methods.min.js') }}" type="text/javascript"></script>
+
+    <!-- DROP ZONE -->
+    <script src="{{ asset('assets/global/plugins/dropzone/dropzone.min.js') }}" type="text/javascript"></script>
+
+    <!-- PORTFOLIO 4 - IMAGES -->
+    <script src="{{ asset('assets/global/plugins/cubeportfolio/js/jquery.cubeportfolio.min.js') }}" type="text/javascript"></script>
 
     <!--||| ********** END PAGE LEVEL PLUGINS ********** -->
+
+    <div id="template-container-dropzone">
+        <div class="dz-preview dz-file-preview">
+            <div class="dz-details">
+                <div class="dz-filename"><span data-dz-name></span></div>
+                <div class="dz-size" data-dz-size></div>
+                <img src="" data-dz-thumbnail />
+            </div>
+            <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+            <div class="dz-success-mark"><span>✔</span></div>
+            <div class="dz-error-mark"><span>✘</span></div>
+            <div class="dz-error-message"><span data-dz-errormessage></span></div>
+        </div>
+    </div>
 
     <script type="application/javascript">
         $(document).ready(function(){
@@ -114,23 +148,27 @@
             });
 
             $('.phase-container').each(function(i,e){
-                var el = $(e);
-                Inventory.loadPhaseContainer(el);
+                Inventory.loadPhaseContainer($(this));
             });
 
             $('body').on('click','.ajax-btn-car-process', function(){
-                var $modal = $('#ajax-modal-car-process');
+                var $modal = $( $(this).data('modal') );
                 $modal.modal('hide');
                 // create the backdrop and wait for next modal to be triggered
                 $('body').modalmanager('loading');
-                $modal.load($(this).attr('data-action'), '', function(){
+                $modal.load($(this).data('action'), function(){
                     $modal.modal();
                 });
             }).on('click', '.ajax-btn-process-next-phase', function () {
-                var el = $(this).parents('.phase-container');
+                var el = $($(this).data('phase-container')).find('.phase-container');
+                var modals = $('.modal');
                 // create the backdrop and wait for next modal to be triggered
                 App.blockUI({
                     target: el,
+                    animate: true
+                });
+                App.blockUI({
+                    target: modals,
                     animate: true
                 });
                 $.ajax({
@@ -138,21 +176,36 @@
                     data:{},
                     complete:function () {
                         Inventory.loadPhaseContainer(el);
+                        Inventory.loadPhaseContainer(modals);
+                        modals.modal('hide');
                     }
                 });
+            }).on('click','.btn-delete-inventory-file',function(){
+                var $modal = $('#ajax-modal-delete-file');
+                $modal.modal('hide');
+
+                // create the backdrop and wait for next modal to be triggered
+                $('body').modalmanager('loading');
+                $modal.load($(this).data('action'), function(){
+                    $modal.modal();
+                });
+            }).on('click','.cbp-caption, .cbp-popup-next, .cbp-popup-content',function(){
+                setTimeout(function () {
+                    $('[data-toggle=\"tooltip\"]').tooltip();
+                },2000);
             });
         });
 
         var Inventory = function () {
             return {
-                loadPhaseContainer: function (el) {
-                    var url = el.data('url');
+                loadPhaseContainer: function (container) {
+                    var url = container.data('url');
                     App.blockUI({
-                        target: el,
+                        target: container,
                         animate: true
                     });
-                    el.load(url, function () {
-                        App.unblockUI(el);
+                    container.load(url, function () {
+                        App.unblockUI(container);
                     });
                 },
                 initPhaseTable: function (table) {
@@ -202,6 +255,17 @@
                         "order": [
                             [1, "asc"]
                         ] // set first column as a default sort by asc
+                    });
+                },
+                refreshPanelFiles: function(){
+                    var container = $('#tab-files').find('.file-container');
+                    var url = container.data('url');
+                    App.blockUI({
+                        target: container,
+                        animate: true
+                    });
+                    container.load(url,function () {
+                        App.unblockUI(container);
                     });
                 }
             }

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon|null $updated_at
  * @property mixed $admission_reason
  * @property mixed $inventory_processes
+ * @property mixed $files
  * @property-read \App\AdmissionReason $admissionReason
  * @property-read \App\CarsInventory $car
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\InventoryProcess[] $inventoryProcesses
@@ -57,5 +58,9 @@ class Inventory extends Model
     public function inventoryProcesses()
     {
         return $this->hasOne(InventoryProcess::class);
+    }
+
+    public function files(){
+        return $this->hasMany(InventoryFile::class);
     }
 }

@@ -5,12 +5,14 @@
     </div>
 
     <div class="actions">
-        <button class="ajax-btn-car-process btn btn-circle btn-icon-only green popovers" data-action="{{ route('ajax-inventory','newInventory') }}"
-            data-container="body" data-trigger="hover" data-placement="bottom" data-content="@lang('Register New')" data-original-title="">
+        <button class="ajax-btn-car-process btn btn-circle btn-icon-only green popovers"
+                data-modal="#ajax-modal-car-process"
+                data-action="{{ route('inventory-ajax','newInventory') }}"
+                data-container="body" data-trigger="hover" data-placement="bottom" data-content="@lang('Register New')" data-original-title="">
             <i class="icon-plus"></i>
         </button>
 
-        <button class="ajax-btn-test btn btn-circle btn-icon-only red popovers hide" data-action="{{ route('store-inventory') }}">
+        <button class="ajax-btn-test btn btn-circle btn-icon-only red popovers hide" data-action="{{ route('inventory-store') }}">
             <i class="fa fa-clock-o"></i>
         </button>
 
@@ -47,13 +49,10 @@
                 </td>
                 <td>{{ $inventory->car->limitation?$inventory->car->limitation->limitation:__('Nothing')}}</td>
                 <td class="text-center">
-                    <button data-action="{{ route('ajax-inventory','loadCarProcessView') }}?id={{ $inventoryProcess->id }}" class="ajax-btn-car-process popovers btn btn-circle green-haze btn-outline sbold uppercase"
+                    <button data-action="{{ route('inventory-ajax','loadCarProcessView') }}?id={{ $inventoryProcess->id }}" class="ajax-btn-car-process popovers btn btn-circle green-haze btn-outline sbold uppercase"
+                            data-modal="#ajax-modal-car-detail"
                             data-container="body" data-trigger="hover" data-placement="bottom" data-content="@lang('See/Update state')" data-original-title="@lang('Actions')">
                         <i class="fa fa-database" aria-hidden="true"></i>
-                    </button>
-                    <button data-action="{{ route('ajax-inventory','processToPhase2') }}?id={{ $inventoryProcess->id }}" class="ajax-btn-process-next-phase process popovers btn btn-circle red-haze btn-outline sbold uppercase"
-                            data-container="body" data-trigger="hover" data-placement="bottom" data-content="@lang('Process to phase') 2" data-original-title="@lang('Process')">
-                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                     </button>
                 </td>
             </tr>
