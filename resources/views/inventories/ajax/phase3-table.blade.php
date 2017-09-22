@@ -33,12 +33,12 @@
                 <td>{{ $inventory->date }}</td>
                 <td>{{ $inventory->admissionReason->reason}}</td>
                 <td class="uppercase">{{ $inventory->car->plate }}</td>
-                <td class="p-t-10">
+                <td class="p-t-5">
                     <span style="width: 100px" class="label {{ $inventory->car->state->color_class }}"> {{ $inventory->car->state->state}}</span>
                 </td>
                 <td>{{ $inventory->car->limitation?$inventory->car->limitation->limitation:__('Nothing')}}</td>
                 <td class="text-center">
-                    <button data-action="{{ route('inventory-ajax','loadCarProcessView') }}?id={{ $inventory->id }}" class="ajax-btn-car-process popovers btn btn-circle green-haze btn-outline sbold uppercase"
+                    <button data-action="{{ route('inventory-ajax','loadCarProcessView') }}?id={{ $inventory->id }}" class="ajax-btn-car-process popovers btn btn-circle green-haze btn-outline sbold uppercase btn-xs"
                             data-modal="#ajax-modal-car-detail"
                             data-container="body" data-trigger="hover" data-placement="bottom" data-content="Ver detalle/actualizar estado" data-original-title="Acciones">
                         <i class="fa fa-database" aria-hidden="true"></i>

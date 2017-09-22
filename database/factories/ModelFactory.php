@@ -50,6 +50,7 @@ $factory->define(App\CarsInventory::class, function (Faker\Generator $faker) {
         'color' => $faker->colorName,
         'registration_city' => $faker->city,
         'pending_judicial' => false,
+        'cars_type_id' => array_random( \App\CarsType::all()->pluck('id')->toArray() ),
         'cars_state_id' => array_random( \App\CarsState::all()->pluck('id')->toArray() ),
         'cars_proprietary_id' => function () {
             return factory(App\CarsProprietary::class)->create()->id;

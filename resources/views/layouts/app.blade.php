@@ -1696,7 +1696,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     </li>
                     <li>
                         @php( $current = request()->segment(count(request()->segments())) )
-                        <span class="text-capitalize">{{ $current }}</span>
+                        <span>{{ __(ucfirst($current)) }}</span>
                     </li>
                 </ul>
                 <div class="page-toolbar hide">

@@ -971,3 +971,10 @@ table.dataTable thead .sorting_desc {
     background: rgba(211, 211, 211, 0.23);
     height: 35px;
 }
+.static-info{
+    margin: 0px !important;
+}
+hr{
+    margin-bottom: 6px;
+    margin-top: 6px;
+}
