@@ -12,56 +12,56 @@ class CarsTypeSeeder extends Seeder
     public function run()
     {
         DB::table('cars_types')->insert([
-            'type' => 'Motocicletas',
+            'name' => 'Motocicleta',
             'description' => 'Motocicletas',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
         DB::table('cars_types')->insert([
-            'type' => 'Automóvil',
-            'description' => 'Automóvil',
+            'name' => 'Automóvil',
+            'description' => 'Automóviles',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
         DB::table('cars_types')->insert([
-            'type' => 'Camión',
-            'description' => 'Camión',
+            'name' => 'Camión',
+            'description' => 'Camiones',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
         DB::table('cars_types')->insert([
-            'type' => 'Moto carro',
-            'description' => 'Moto carro',
+            'name' => 'Moto carro',
+            'description' => 'Moto carros',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
         DB::table('cars_types')->insert([
-            'type' => 'Bicicleta',
-            'description' => 'Bicicleta',
+            'name' => 'Bicicleta',
+            'description' => 'Bicicletas',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
         DB::table('cars_types')->insert([
-            'type' => 'Carretillas',
+            'name' => 'Carretilla',
             'description' => 'Carretillas',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
         DB::table('cars_types')->insert([
-            'type' => 'Van',
+            'name' => 'Van',
             'description' => 'Van',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
         DB::table('cars_types')->insert([
-            'type' => 'Remolques',
+            'name' => 'Remolque',
             'description' => 'Remolques',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),

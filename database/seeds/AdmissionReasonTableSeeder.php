@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\AdmissionReason;
 
 class AdmissionReasonTableSeeder extends Seeder
 {
@@ -11,32 +12,45 @@ class AdmissionReasonTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('admission_reasons')->insert([
-            'reason' => 'Lesiones',
+        $courtOrder = AdmissionReason::create([
+            'name' => 'Orden Judicial',
+            'description' => 'Ingreso por orden judicial',
+            'parent' => true,
+            'admission_reason_id' => null
+        ]);
+
+        AdmissionReason::create([
+            'name' => 'Lesiones',
             'description' => 'Ingreso por lesiones',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+            'admission_reason_id' => $courtOrder->id
         ]);
 
-        DB::table('admission_reasons')->insert([
-            'reason' => 'Homicidio',
-            'description' => 'Ingreso por Homicidio',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+        AdmissionReason::create([
+            'name' => 'Homicidio',
+            'description' => 'Ingreso por homicidio',
+            'admission_reason_id' => $courtOrder->id
         ]);
 
-        DB::table('admission_reasons')->insert([
-            'reason' => 'Contravención',
-            'description' => 'Ingreso por Contravención',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+        AdmissionReason::create([
+            'name' => 'Contravención',
+            'description' => 'Ingreso por contravención',
+            'admission_reason_id' => $courtOrder->id
         ]);
 
-        DB::table('admission_reasons')->insert([
-            'reason' => 'Embargo',
-            'description' => 'Ingreso por Embargo',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+        AdmissionReason::create([
+            'name' => 'Embargo',
+            'description' => 'Ingreso por embargo',
+            'admission_reason_id' => $courtOrder->id
         ]);
+
+        $traffic_violation = AdmissionReason::create([
+            'name' => 'Infracción de Tránsito',
+            'description' => 'Ingreso por infracción de tránsito',
+            'parent' => true,
+            'admission_reason_id' => null
+        ]);
+
+        $traffic_violation->admission_reason_id = $traffic_violation->id;
+        $traffic_violation->save();
     }
 }

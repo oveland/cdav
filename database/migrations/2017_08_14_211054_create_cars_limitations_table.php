@@ -15,7 +15,7 @@ class CreateCarsLimitationsTable extends Migration
     {
         Schema::create('cars_limitations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('limitation',45)->unique();
+            $table->string('name',45)->unique();
             $table->string('issuing',45);
             $table->string('motive',200);
             $table->string('description',200)->nullable();

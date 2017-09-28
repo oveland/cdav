@@ -1,11 +1,15 @@
 <div class="portlet-title">
-    <div class="caption text-success">
-        <i class=" icon-layers"></i>
+    <div class="caption font-green-sharp">
+        <i class="icon-ghost font-green-sharp" aria-hidden="true"></i>
         <span class="caption-subject bold uppercase">@lang('List') - @lang('Abandonment Declaration')</span>
     </div>
 
     <div class="actions">
-        <button class="btn btn-circle btn-icon-only btn-default" onclick="Inventory.loadPhaseContainer($(this).parents('.phase-container'));">
+        <button class="btn btn-circle btn-icon-only btn-success tooltips" data-original-title="@lang('Download report')">
+            <i class="fa fa-download"></i>
+        </button>
+        <button class="btn btn-circle btn-icon-only btn-default"
+                data-container="body" onclick="Inventory.loadPhaseContainer($(this).parents('.phase-container'));">
             <i class="icon-refresh"></i>
         </button>
     </div>
@@ -15,33 +19,44 @@
     <thead>
         <tr class="bg-green-seagreen bg-font-green-seagreen">
             <th>@lang('Number')</th>
-            <th>@lang('Date')</th>
+            <th>@lang('Admission Date')</th>
             <th>@lang('Admission Reason')</th>
             <th>@lang('Plate')</th>
-            <th>@lang('State')</th>
-            <th>@lang('Limitation')</th>
+            <th>@lang('Type')</th>
+            <th class="hide">@lang('State')</th>
+            <th>@lang('Abandonment state')</th>
             <th>@lang('Actions')</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($inventoryProcesses as $inventoryProcess)
+        @foreach($inventoryProcesses->sortByDesc('id') as $inventoryProcess)
             @php
                 $inventory = $inventoryProcess->inventory;
             @endphp
             <tr class="odd gradeX">
-                <td>{{ $inventory->number }}</td>
+                <td>{{ $inventory->id }}</td>
                 <td>{{ $inventory->date }}</td>
-                <td>{{ $inventory->admissionReason->reason}}</td>
+                <td>{{ $inventory->admissionReason->name }}</td>
                 <td class="uppercase">{{ $inventory->car->plate }}</td>
-                <td class="p-t-5">
-                    <span style="width: 100px" class="label {{ $inventory->car->state->color_class }}"> {{ $inventory->car->state->state}}</span>
+                <td>{{ $inventory->car->type->name }}</td>
+                <td class="p-t-5 hide">
+                    <span style="width: 100px" class="label {{ $inventory->car->state->color_class }}"> {{ $inventory->car->state->name}}</span>
                 </td>
-                <td>{{ $inventory->car->limitation?$inventory->car->limitation->limitation:__('Nothing')}}</td>
+                <td class="{{ $inventoryProcess->started?'text-warning':'' }}">
+                    {{ $inventoryProcess->started?__('Yes'):__('No') }}
+                </td>
                 <td class="text-center">
-                    <button data-action="{{ route('inventory-ajax','loadCarProcessView') }}?id={{ $inventory->id }}" class="ajax-btn-car-process popovers btn btn-circle green-haze btn-outline sbold uppercase btn-xs"
+                    @if(!$inventoryProcess->started)
+                    <button data-action="{{ route('inventory-ajax','startAbandonmentDeclaration') }}?id={{ $inventoryProcess->id }}" class="ajax-btn-process-start tooltips btn btn-circle yellow-crusta btn-outline sbold uppercase btn-xs"
                             data-modal="#ajax-modal-car-detail"
-                            data-container="body" data-trigger="hover" data-placement="bottom" data-content="Ver detalle/actualizar estado" data-original-title="Acciones">
-                        <i class="fa fa-database" aria-hidden="true"></i>
+                            data-container="body" data-trigger="hover" data-placement="bottom" data-original-title="@lang('Start abandonment declaration process')">
+                        <i class="icon-ghost" aria-hidden="true"></i>
+                    </button>
+                    @endif
+                    <button data-action="{{ route('inventory-ajax','loadCarProcessView') }}?id={{ $inventoryProcess->id }}" class="ajax-btn-car-process tooltips btn btn-circle green-haze btn-outline sbold uppercase btn-xs"
+                            data-modal="#ajax-modal-car-detail"
+                            data-container="body" data-trigger="hover" data-placement="bottom" data-original-title="@lang('See/Update state')">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
                     </button>
                 </td>
             </tr>

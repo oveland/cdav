@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 /**
  * App\CarsInventory
  *
@@ -14,19 +15,22 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $model
  * @property string $color
  * @property string $registration_city
+ * @property bool $pending_judicial
  * @property int $inventory_id
+ * @property int $cars_type_id
  * @property int $cars_state_id
  * @property int $cars_proprietary_id
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
- * @property mixed $abandonment_declaration
  * @property-read \App\AbandonmentDeclaration $abandonmentDeclaration
  * @property-read \App\Inventory $inventory
  * @property-read \App\CarsLimitation $limitation
  * @property-read \App\CarsProprietary $proprietary
  * @property-read \App\CarsState $state
+ * @property-read \App\CarsType $type
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereCarsProprietaryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereCarsStateId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereCarsTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereChassisNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereCreatedAt($value)
@@ -34,12 +38,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereInventoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereModel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory wherePendingJudicial($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory wherePlate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereRegistrationCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property int $pending_judicial
- * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsInventory wherePendingJudicial($value)
  */
 class CarsInventory extends Model
 {
@@ -54,8 +57,13 @@ class CarsInventory extends Model
      * @var array
      */
     protected $fillable = [
-        'plate', 'engine_number', 'chassis_number', 'model', 'color', 'registration_city', 'pending_judicial', 'cars_state_id'
+        'plate', 'engine_number', 'chassis_number', 'model', 'color', 'registration_city', 'pending_judicial', 'cars_type_id', 'cars_state_id'
     ];
+
+    public function type()
+    {
+        return $this->belongsTo(CarsType::class, 'cars_type_id');
+    }
 
     public function state()
     {
@@ -80,5 +88,10 @@ class CarsInventory extends Model
     public function abandonmentDeclaration()
     {
         return $this->hasOne(AbandonmentDeclaration::class);
+    }
+
+    public function hasPendingJudicial()
+    {
+        return $this->pending_judicial;
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\CarsLimitation
  *
  * @property int $id
- * @property string $limitation
+ * @property string $name
  * @property string $issuing
  * @property string $motive
  * @property string|null $description
@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereIssuing($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereLimitation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereMotive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsLimitation whereUpdatedAt($value)
  * @mixin \Eloquent
  */

@@ -17,6 +17,7 @@ class CreateInventoryProcessesTable extends Migration
             $table->increments('id');
             $table->timestamp('date')->useCurrent();
             $table->integer('phase');
+            $table->boolean('started')->default(false);
             $table->integer('inventory_id')->unsigned()->unique();
             $table->timestamps();
 

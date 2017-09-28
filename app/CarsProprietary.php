@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsProprietary wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsProprietary whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $identity_type
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsProprietary whereIdentityType($value)
  */
 class CarsProprietary extends Model
 {
@@ -39,7 +41,7 @@ class CarsProprietary extends Model
      * @var array
      */
     protected $fillable = [
-        'identity', 'name', 'address', 'phone', 'email'
+        'identity_type', 'identity', 'name', 'address', 'phone', 'email'
     ];
 
     public function car()

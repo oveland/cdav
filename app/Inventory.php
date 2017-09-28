@@ -40,7 +40,7 @@ class Inventory extends Model
      * @var array
      */
     protected $fillable = [
-        'date','number', 'admission_reason_id'
+        'date', 'admission_reason_id'
     ];
 
     protected $dates = ['date'];

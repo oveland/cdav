@@ -11,7 +11,7 @@ class InventoryTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $inventory = factory(\App\Inventory::class)->create();
 
             $carInventory = factory(\App\CarsInventory::class)->create([
@@ -22,8 +22,12 @@ class InventoryTableSeeder extends Seeder
                 'cars_inventory_id' => $carInventory->id
             ]);
 
+            $canPassToPhase2 = $inventory->admissionReason->canPassToPhase2($carInventory->pending_judicial);
+            $phase = $canPassToPhase2 ? random_int(1, 3) : 1;
             $inventoryProcess = factory(\App\InventoryProcess::class)->create([
-                'inventory_id' => $inventory->id
+                'inventory_id' => $inventory->id,
+                'phase' => $phase,
+                'started' => $phase == 1 ? true : (rand(0, 1) == 1),
             ]);
         }
     }

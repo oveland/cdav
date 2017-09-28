@@ -978,3 +978,24 @@ hr{
     margin-bottom: 6px;
     margin-top: 6px;
 }
+select option:checked{
+    color: white;
+    background: #bf4214;
+}
+.input-icon .select2-selection{
+    border-radius: 50px !important;
+    padding-left: 30px !important;
+}
+.step{
+    padding: 0 !important;
+}
+.fuelux .actions{
+    background: transparent !important;
+}
+.select2-results__group{
+    color: #60acaa !important;
+    text-transform: uppercase !important;
+    margin-top: 10px;
+    border-bottom: 1px solid;
+    border-top: 1px dotted lightgray;
+}

@@ -24,7 +24,6 @@ class StoreInventory extends FormRequest
     public function rules()
     {
         return [
-            "number" => "required|string|max:100|unique:inventories",
             "admission_reason_id" => "required|integer",
             "plate" => "required|string|size:7",
             "engine_number" => "required|string|max:45",
@@ -32,6 +31,7 @@ class StoreInventory extends FormRequest
             "model" => "required|integer|min:1990|max:2030",
             "color" => "required|string|max:20",
             "registration_city" => "required|string|max:45",
+            "cars_type_id" => "required|integer",
             "cars_state_id" => "required|integer",
             "identity" => "required|string|max:20",
             "name" => "required|string|max:45",

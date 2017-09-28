@@ -32,8 +32,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\Inventory::class, function (Faker\Generator $faker) {
     return [
         'date' => \Carbon\Carbon::now(),
-        'number' => rand(1837682,4982398),
-        'admission_reason_id' => array_random( \App\AdmissionReason::all()->pluck('id')->toArray() ),
+        'admission_reason_id' => array_random(\App\AdmissionReason::all()->pluck('id')->toArray()),
     ];
 });
 
@@ -43,15 +42,15 @@ $factory->define(App\Inventory::class, function (Faker\Generator $faker) {
  */
 $factory->define(App\CarsInventory::class, function (Faker\Generator $faker) {
     return [
-        'plate' => strtoupper(str_random(3).'-'.rand(100,999)),
+        'plate' => strtoupper(str_random(3) . '-' . rand(100, 999)),
         'engine_number' => str_random(8),
-        'chassis_number' => rand(10211230,99912331),
-        'model' => rand(1990,2030),
+        'chassis_number' => rand(10211230, 99912331),
+        'model' => rand(1990, 2030),
         'color' => $faker->colorName,
         'registration_city' => $faker->city,
-        'pending_judicial' => false,
-        'cars_type_id' => array_random( \App\CarsType::all()->pluck('id')->toArray() ),
-        'cars_state_id' => array_random( \App\CarsState::all()->pluck('id')->toArray() ),
+        'pending_judicial' => $faker->boolean(),
+        'cars_type_id' => array_random(\App\CarsType::all()->pluck('id')->toArray()),
+        'cars_state_id' => array_random(\App\CarsState::all()->pluck('id')->toArray()),
         'cars_proprietary_id' => function () {
             return factory(App\CarsProprietary::class)->create()->id;
         }
@@ -63,9 +62,11 @@ $factory->define(App\CarsInventory::class, function (Faker\Generator $faker) {
  * Create CarsProprietary registers
  */
 $factory->define(App\CarsProprietary::class, function (Faker\Generator $faker) {
+    $identity_types = ['CC', 'NIT'];
     return [
-        'identity' => rand(9876543,98765432),
-        'name' => $faker->firstName().' '.$faker->lastName,
+        'identity_type' => $identity_types[array_rand($identity_types, 1)],
+        'identity' => rand(9876543, 98765432),
+        'name' => $faker->firstName() . ' ' . $faker->lastName,
         'address' => $faker->address,
         'phone' => $faker->phoneNumber,
         'email' => $faker->email
@@ -79,7 +80,6 @@ $factory->define(App\CarsProprietary::class, function (Faker\Generator $faker) {
 $factory->define(App\InventoryProcess::class, function (Faker\Generator $faker) {
     return [
         'date' => \Carbon\Carbon::now(),
-        'phase' => random_int(1,3)
     ];
 });
 
@@ -90,7 +90,7 @@ $factory->define(App\InventoryProcess::class, function (Faker\Generator $faker) 
 $factory->define(App\AbandonmentDeclaration::class, function (Faker\Generator $faker) {
     return [
         'date' => $faker->dateTime,
-        'resolution_number' => rand(32098,586979)
+        'resolution_number' => rand(32098, 586979)
     ];
 });
 
@@ -100,8 +100,8 @@ $factory->define(App\AbandonmentDeclaration::class, function (Faker\Generator $f
  */
 $factory->define(App\CarsLimitation::class, function (Faker\Generator $faker) {
     return [
-        'limitation' => 'Medida Provisional '.str_random(5),
-        'issuing' => 'Juzgado Emisor '.str_random(5),
+        'name' => 'Medida Provisional ' . str_random(5),
+        'issuing' => 'Juzgado Emisor ' . str_random(5),
         'motive' => 'Motivo de la limitación',
         'description' => 'Descripción opcional de la limitación'
     ];

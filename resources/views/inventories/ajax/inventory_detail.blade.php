@@ -3,8 +3,7 @@
     $car = $inventoryProcess->inventory->car;
     $proprietary = $car->proprietary;
     $phaseColor = ['info','success','warning','danger'];
-    $pendingJudicial = $car->pending_judicial == 1?true:false;
-    $pendingJudicialStr = $car->pending_judicial == 1?'SI':'NO';
+    $pendingJudicialStr = $car->pending_judicial?'SI':'NO';
 @endphp
 <div class="portlet light m-b-0">
     <div class="portlet-title tabbable-line">
@@ -41,12 +40,18 @@
                 <div class="mt-element-ribbon bg-grey-steel p-b-0 m-b-0">
                 <div class="ribbon ribbon-border-hor ribbon-clip ribbon-color-danger">
                     <div class="ribbon-sub ribbon-clip"></div>
-                    @lang('Inventory'): <strong>{!! $inventory->number or 'None' !!}</strong>
+                    @lang('Inventory'): <strong>{!! $inventory->id or 'None' !!}</strong>
+                </div>
+                <div class="pull-right m-r-40">
+                    <a href="javascript:return false;" class="btn btn-circle yellow-mint btn-outline" onclick="toastr['info']('@lang('Feature on development')', '@lang('Information')')">
+                        <i class="fa fa-spin fa-cog"></i> @lang('Edit')
+                    </a>
                 </div>
                 <div class="ribbon ribbon-right ribbon-vertical-right ribbon-shadow ribbon-border-dash-vert ribbon-color-{{ $phaseColor[$inventoryProcess->phase] }} uppercase">
                     <div class="ribbon-sub ribbon-bookmark"></div>
                     <strong class="p-4">{{ $inventoryProcess->phase  }}</strong>
                 </div>
+
 
                 <div class="row m-t-40">
                     <div class="col-md-6 col-sm-12">
@@ -56,9 +61,6 @@
                                     <i class="fa fa-car f-s-24"></i>@lang('Vehicle')
                                 </div>
                                 <div class="actions">
-                                    <a href="javascript:return false;" class="btn btn-default btn-sm btn-circle" onclick="toastr['info']('@lang('Feature on development')', '@lang('Information')')">
-                                        <i class="fa fa-spin fa-cog"></i> Edit
-                                    </a>
                                 </div>
                             </div>
                             <div class="portlet-body">
@@ -93,7 +95,7 @@
                                 <div class="row static-info">
                                     <div class="col-md-7 name"> @lang('State'): </div>
                                     <div class="col-md-5 value">
-                                        <span style="width: 100px" class="label {{ $car->state->color_class }}"> {{ $car->state->state}}</span>
+                                        <span style="width: 100px" class="label {{ $car->state->color_class }}"> {{ $car->state->name}}</span>
                                     </div>
                                 </div>
                                 <hr>
@@ -115,14 +117,11 @@
                                     <i class="fa fa-user f-s-24"></i>@lang('Proprietary')
                                 </div>
                                 <div class="actions">
-                                    <a href="javascript:return false;" class="btn btn-default btn-sm btn-circle" onclick="toastr['info']('Funcionalidad en proceso de desarrollo', 'Información')">
-                                        <i class="fa fa-spin fa-cog"></i> Edit
-                                    </a>
                                 </div>
                             </div>
                             <div class="portlet-body">
                                 <div class="row static-info">
-                                    <div class="col-md-5 name"> @lang('Identity'): </div>
+                                    <div class="col-md-5 name"> @lang('Identity') <strong>({{ $proprietary->identity_type }})</strong>: </div>
                                     <div class="col-md-7 value">{{ $proprietary->identity }}</div>
                                 </div>
                                 <div class="row static-info">
@@ -154,35 +153,18 @@
                         </div>
 
                         <blockquote class="alert alert-info">
-                            <div class="pull-right">
-                                <a href="javascript:return false;" class="btn grey-cararra btn-sm btn-circle btn-outline" onclick="toastr['info']('@lang('Feature on development')', '@lang('Information')')">
-                                    <i class="fa fa-spin fa-cog"></i> Edit
-                                </a>
-                            </div>
-                            <hr>
                             <div class="row static-info">
                                 <div class="col-md-6 name">
                                     <i class="fa fa-ticket m-r-10"></i> @lang('Admission Reason'):
                                 </div>
-                                <div class="col-md-6 value">{{ $inventory->admissionReason->reason }}</div>
+                                <div class="col-md-6 value">{{ $inventory->admissionReason->name }}</div>
                             </div>
                             <div class="row static-info">
                                 <div class="col-md-6 name">
                                     <i class="fa fa-ticket m-r-10"></i> @lang('Judicial Pending'):
                                 </div>
                                 <div class="col-md-6 value">
-                                    <div class="form-group form-md-checkboxes m-b-0">
-                                        <label class="hide">@lang('Judicial Pending')</label>
-                                        <div class="md-checkbox-list">
-                                            <div class="md-checkbox">
-                                                <input type="checkbox" id="checkbox2" class="md-check" disabled name="pending_judicial2" {{ $car->pending_judicial==1?'checked':'' }}>
-                                                <label for="checkbox2">
-                                                    <span class="inc"></span>
-                                                    <span class="check"></span>
-                                                    <span class="box"></span></label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ $pendingJudicialStr }}
                                 </div>
                             </div>
                             <div class="row static-info">
@@ -212,10 +194,10 @@
 </div>
 <div class="modal-footer col-md-12 m-t-10">
     <button class="btn btn-circle yellow-mint btn-outline sbold uppercase" type="button" data-dismiss="modal">@lang('Close')</button>
-    @if($inventoryProcess->phase < 3)
+    @if($inventoryProcess->phase < 3 && $inventoryProcess->started)
         @php
             $nextPhase = ($inventoryProcess->phase + 1);
-            $canNextPhase = $inventoryProcess->phase==1?!$pendingJudicial:$inventory->admissionReason->id == 3;
+            $canNextPhase = $inventory->admissionReason->canPassToPhase2($car->pending_judicial);
         @endphp
         <button class="{{ $canNextPhase?'ajax-btn-process-next-phase':'' }} process popovers btn btn-circle sbold text-capitalize btn-{{ $phaseColor[$nextPhase] }} btn-outline {{ $canNextPhase?'':'disabled' }}"
                 @if($canNextPhase)

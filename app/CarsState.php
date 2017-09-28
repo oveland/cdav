@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property string|null $color_class
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsState whereColorClass($value)
+ * @property string $name
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CarsState whereName($value)
  */
 class CarsState extends Model
 {

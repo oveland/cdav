@@ -34,12 +34,14 @@ class InventoryController extends Controller
                 case 'processToPhase2':
                     $inventoryProcess = InventoryProcess::find($request->get('id'));
                     $inventoryProcess->phase = 2;
+                    $inventoryProcess->started = false;
                     $inventoryProcess->save();
                     return "success";
                     break;
                 case 'processToPhase3':
                     $inventoryProcess = InventoryProcess::find($request->get('id'));
                     $inventoryProcess->phase = 3;
+                    $inventoryProcess->started = false;
                     $inventoryProcess->save();
                     return "success";
                     break;
@@ -59,19 +61,15 @@ class InventoryController extends Controller
                     $inventoryProcesses = InventoryProcess::phase3()->get();
                     return view('inventories.ajax.phase3-table', compact('inventoryProcesses'));
                     break;
+                case 'startAbandonmentDeclaration':
+                    $inventoryProcess = InventoryProcess::find($request->get('id'));
+                    $inventoryProcess->started = true;
+                    $inventoryProcess->save();
+                    return "success";
+                    break;
             }
         }
         return view('inventories.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -83,8 +81,7 @@ class InventoryController extends Controller
     public function store(StoreInventory $request)
     {
         $params = $request->all();
-        $response = (object)['error' => false, 'message' => ''];
-        $params['pending_judicial'] = $params['pending_judicial'] == 'on' ? true : false;
+        $response = (object)['success' => true, 'message' => ''];
 
         try {
             $inventory = Inventory::create($params);
@@ -94,11 +91,11 @@ class InventoryController extends Controller
             $car->inventory()->associate($inventory);
             $proprietary->car()->save($car);
 
-            $inventory->inventoryProcesses()->save(new InventoryProcess(['phase' => 1]));
+            $inventory->inventoryProcesses()->save(new InventoryProcess(['phase' => 1,'started' => true]));
 
             $response->message = __('Inventory created successfully');
         } catch (Exception $e) {
-            $response->error = true;
+            $response->success = false;
             $response->message = __('Error saving inventory register');
         }
 
@@ -146,7 +143,7 @@ class InventoryController extends Controller
      */
     public function getImageFile(InventoryFile $inventoryFile, Request $request)
     {
-        $image = Image::make(\Storage::get($inventoryFile->getUrlFileImage()));
+        $image = Image::make($inventoryFile->getUrlFileImage());
         if ($request->get('thumbnail')) {
             $image->resize(200, 200);
         }
@@ -194,48 +191,8 @@ class InventoryController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Inventory $inventory
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Inventory $inventory)
+    public function downloadReportPhase2()
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Inventory $inventory
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Inventory $inventory)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Inventory $inventory
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Inventory $inventory)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Inventory $inventory
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Inventory $inventory)
-    {
-        //
+        
     }
 }
