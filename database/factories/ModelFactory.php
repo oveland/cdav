@@ -31,7 +31,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
  */
 $factory->define(App\Inventory::class, function (Faker\Generator $faker) {
     return [
-        'date' => \Carbon\Carbon::now(),
+        'date' => $faker->dateTimeBetween('-2 years','now'),
         'admission_reason_id' => array_random(\App\AdmissionReason::all()->pluck('id')->toArray()),
     ];
 });

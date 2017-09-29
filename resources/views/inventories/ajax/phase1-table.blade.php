@@ -5,10 +5,10 @@
     </div>
 
     <div class="actions">
-        <button class="ajax-btn-car-process btn btn-circle btn-icon-only green popovers"
+        <button class="ajax-btn-car-process btn btn-circle btn-icon-only green tooltips"
                 data-modal="#ajax-modal-car-process"
                 data-action="{{ route('inventory-ajax','newInventory') }}"
-                data-container="body" data-trigger="hover" data-placement="bottom" data-content="@lang('Register New')" data-original-title="">
+                data-container="body" data-trigger="hover" data-placement="top" data-original-title="@lang('Register New')">
             <i class="icon-plus"></i>
         </button>
 
@@ -16,7 +16,8 @@
             <i class="fa fa-check"></i>
         </button>
 
-        <button class="btn btn-circle btn-icon-only btn-default" onclick="Inventory.loadPhaseContainer($(this).parents('.phase-container'));">
+        <button class="btn btn-circle btn-icon-only btn-default tooltips" onclick="Inventory.loadPhaseContainer($(this).parents('.phase-container'));"
+                data-container="body" data-trigger="hover" data-placement="top" data-original-title="@lang('Update')">
             <i class="icon-refresh"></i>
         </button>
     </div>
@@ -38,25 +39,26 @@
         @foreach($inventoryProcesses->sortByDesc('id') as $inventoryProcess)
             @php
                 $inventory = $inventoryProcess->inventory;
+                $car = $inventory->car;
             @endphp
             <tr class="odd gradeX">
                 <td>{{ $inventory->id }}</td>
                 <td>{{ $inventory->date }}</td>
                 <td>
-                    <span class="{{ $inventory->car->hasPendingJudicial()?'text-danger tooltips':'' }}" data-original-title="@lang('Whit pending judicial')">
+                    <span class="{{ $car->hasPendingJudicial()?'text-danger tooltips':'' }}" data-original-title="@lang('Whit pending judicial')">
                         {{ $inventory->admissionReason->name}}
                     </span>
                 </td>
-                <td class="uppercase">{{ $inventory->car->plate }}</td>
-                <td>{{ $inventory->car->type->name}}</td>
+                <td class="uppercase">{{ $car->plate }}</td>
+                <td>{{ $car->type->name}}</td>
                 <td class="p-t-5">
-                    <span style="width: 100px" class="label {{ $inventory->car->state->color_class }}"> {{ $inventory->car->state->name}}</span>
+                    <span class="label {{ $car->state->color_class }}"> {{ $car->state->name}}</span>
                 </td>
                 <td class="text-center">
                     <button data-action="{{ route('inventory-ajax','loadCarProcessView') }}?id={{ $inventoryProcess->id }}" class="ajax-btn-car-process tooltips btn btn-circle green-haze btn-outline sbold uppercase btn-xs"
                             data-modal="#ajax-modal-car-detail"
-                            data-container="body" data-trigger="hover" data-placement="bottom" data-original-title="@lang('See/Update state')">
-                        <i class="fa fa-database" aria-hidden="true"></i>
+                            data-container="body" data-trigger="hover" data-placement="bottom" data-original-title="@lang('Details')">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
                     </button>
                 </td>
             </tr>

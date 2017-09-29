@@ -8,8 +8,10 @@ use App\Http\Requests\StoreInventory;
 use App\Inventory;
 use App\InventoryFile;
 use App\InventoryProcess;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Image;
+use PDF;
 use Mockery\Exception;
 
 class InventoryController extends Controller
@@ -42,6 +44,8 @@ class InventoryController extends Controller
                     $inventoryProcess = InventoryProcess::find($request->get('id'));
                     $inventoryProcess->phase = 3;
                     $inventoryProcess->started = false;
+                    $inventoryProcess->notification_phase = 0;
+                    $inventoryProcess->date_notification_phase = Carbon::now();
                     $inventoryProcess->save();
                     return "success";
                     break;
@@ -61,7 +65,13 @@ class InventoryController extends Controller
                     $inventoryProcesses = InventoryProcess::phase3()->get();
                     return view('inventories.ajax.phase3-table', compact('inventoryProcesses'));
                     break;
-                case 'startAbandonmentDeclaration':
+                case 'startInventoryPhaseProcess':
+                    $inventoryProcess = InventoryProcess::find($request->get('id'));
+                    $inventoryProcess->started = true;
+                    $inventoryProcess->save();
+                    return "success";
+                    break;
+                case 'startNextEstrangementProcess':
                     $inventoryProcess = InventoryProcess::find($request->get('id'));
                     $inventoryProcess->started = true;
                     $inventoryProcess->save();
@@ -91,7 +101,7 @@ class InventoryController extends Controller
             $car->inventory()->associate($inventory);
             $proprietary->car()->save($car);
 
-            $inventory->inventoryProcesses()->save(new InventoryProcess(['phase' => 1,'started' => true]));
+            $inventory->inventoryProcesses()->save(new InventoryProcess(['phase' => 1, 'started' => true]));
 
             $response->message = __('Inventory created successfully');
         } catch (Exception $e) {
@@ -193,6 +203,11 @@ class InventoryController extends Controller
 
     public function downloadReportPhase2()
     {
-        
+        $inventoryProcesses = InventoryProcess::phase2()->started()->get();
+        //return view('inventories.reports.phase-2', compact('inventoryProcesses'));
+
+
+        $pdf = PDF::loadView('inventories.reports.phase-2', ['inventoryProcesses' => $inventoryProcesses]);
+        return $pdf->download(__('Abandonment Declaration') .' - '.date('Y-m-d'). '.pdf');
     }
 }

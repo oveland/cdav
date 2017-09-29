@@ -254,7 +254,7 @@
                             "emptyTable": "No se encontraron registros",
                             "info": "Registros _START_ a _END_ de _TOTAL_ en total",
                             "infoEmpty": "No se encontraron registros",
-                            "infoFiltered": "(_MAX_ resultados encontrados)",
+                            "infoFiltered": "(Filtro a _MAX_ entradas totales)",
                             "lengthMenu": "Mostrar: _MENU_",
                             "search": "Buscar:",
                             "zeroRecords": "No se encontraron registros",

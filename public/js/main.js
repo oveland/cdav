@@ -1,4 +1,5 @@
-$(document).ready(function(){
+$(document).ready(function () {
+    $.fn.modalmanager.defaults.resize = true;
     $.fn.modal.defaults.spinner = $.fn.modalmanager.defaults.spinner =
         '<div class="loading-spinner" style="width: 200px; margin-left: -100px;">' +
         '<div class="progress progress-striped active">' +
@@ -6,15 +7,18 @@ $(document).ready(function(){
         '</div>' +
         '</div>';
 
-    $.fn.modalmanager.defaults.resize = true;
-
-    $( document ).ajaxComplete(function() {
-        App.initComponents();
-    });
-
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        error: function (xhr, request, error) {
+            if (xhr.statusText === "Unauthorized" || xhr.status === 401) {
+                toastr["warning"]("Tu sesión ha caducado. Ingresa nuevamente tus credenciales", "Sesión caducada!");
+                location.reload();
+            }
+        },
+        complete: function () {
+            App.initComponents();
         }
     });
 

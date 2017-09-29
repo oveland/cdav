@@ -37,6 +37,10 @@ Route::group(['middleware' => ['check-demo-user']], function () {
             Route::delete('file/{inventoryFile}/delete', 'InventoryController@deleteFile')->name('inventory-file-delete');
         });
 
+        Route::prefix('reports')->group(function(){
+            Route::get('/phase-2','InventoryController@downloadReportPhase2')->name('reports-phase-2');
+        });
+
         /* For demo pages */
         Route::get('/{file}', function($file){
             if( Auth::guest() ){

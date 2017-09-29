@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $date
  * @property int $phase
  * @property bool $started
+ * @property int $notification_phase
+ * @property \Carbon\Carbon|null $date_notification_phase
  * @property int $inventory_id
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
@@ -19,15 +21,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess phase1()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess phase2()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess phase3()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess started()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereDateNotificationPhase($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereInventoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereNotificationPhase($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess wherePhase($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereStarted($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereUpdatedAt($value)
  * @mixin \Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess started()
  */
 class InventoryProcess extends Model
 {
@@ -42,10 +46,10 @@ class InventoryProcess extends Model
      * @var array
      */
     protected $fillable = [
-        'date', 'phase', 'started'
+        'date', 'phase', 'started', 'notification_phase', 'date_notification_phase'
     ];
 
-    protected $dates = ['date'];
+    protected $dates = ['date', 'date_notification_phase'];
 
     public function inventory()
     {
