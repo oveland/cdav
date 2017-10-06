@@ -36,7 +36,9 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class=" icon-layers font-green"></i>
-                        <span class="caption-subject font-green bold uppercase">@lang('Inventories')</span>
+                        <span class="caption-subject font-green bold uppercase">
+                            @lang('Inventories')
+                        </span>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -100,6 +102,8 @@
     <div id="ajax-modal-car-process" class="bootbox modal fade modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="860"></div>
     <div id="ajax-modal-car-detail" class="bootbox modal fade modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="1000"></div>
     <div id="ajax-modal-delete-file" class="bootbox modal fade modal-scroll" tabindex="-1"></div>
+
+    <div id="ajax-modal-send-mail-notification" class="bootbox modal fade modal-scroll" tabindex="-1"></div>
 @endsection
 @section('javascripts')
 
@@ -175,14 +179,9 @@
                 });
             }).on('click', '.ajax-btn-process-start', function () {
                 var el = $(this).parents('.phase-container');
-                var modals = $('.modal');
                 // create the backdrop and wait for next modal to be triggered
                 App.blockUI({
                     target: el,
-                    animate: true
-                });
-                App.blockUI({
-                    target: modals,
                     animate: true
                 });
                 $.ajax({
@@ -190,7 +189,6 @@
                     data: {},
                     complete: function () {
                         Inventory.loadPhaseContainer(el);
-                        modals.modal('hide');
                     }
                 });
             }).on('click', '.ajax-btn-process-next-phase', function () {
@@ -210,8 +208,33 @@
                     data: {},
                     complete: function () {
                         Inventory.loadPhaseContainer(el);
-                        Inventory.loadPhaseContainer(modals);
+                        //Inventory.loadPhaseContainer(modals);
                         modals.modal('hide');
+                    }
+                });
+            }).on('click', '.ajax-btn-start-next-sub-phase', function () {
+                var $modal = $('#ajax-modal-send-mail-notification');
+                $modal.modal('hide');
+
+                // create the backdrop and wait for next modal to be triggered
+                $('body').modalmanager('loading');
+                $modal.load($(this).data('action'), function () {
+                    $modal.modal('show');
+                });
+            }).on('click', '.ajax-btn-auto-phase-2', function () {
+                var el = $('#phase-1').find('.phase-container');
+                App.blockUI({
+                    target: el,
+                    animate: true
+                });
+                $.ajax({
+                    url: $(this).attr('data-action'),
+                    data: {},
+                    success: function (data) {
+                        toastr['info'](data, '@lang('Information')')
+                    },
+                    complete: function () {
+                        Inventory.loadPhaseContainer(el);
                     }
                 });
             }).on('click', '.btn-delete-inventory-file', function () {

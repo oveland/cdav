@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\Inventory $inventory
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess abandoned()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess phase1()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess phase2()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess phase3()
@@ -32,6 +34,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereStarted($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $observations
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereObservations($value)
  */
 class InventoryProcess extends Model
 {
@@ -98,5 +102,26 @@ class InventoryProcess extends Model
     public function scopeStarted($query)
     {
         return $query->where('started', true);
+    }
+
+    /**
+     * Scope a query to Inventories with abandoned vehicles (created over a year ago).
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAbandoned($query)
+    {
+        return $query->where('phase', 1)->where('date', '<', Carbon::now()->subYears(1));
+    }
+
+    public function isContravention()
+    {
+        return $this->inventory->admissionReason->isContravention();
+    }
+
+    public function canPassToPhase2()
+    {
+        return !$this->inventory->car->pending_judicial && $this->isContravention();
     }
 }

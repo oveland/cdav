@@ -5,6 +5,14 @@
     </div>
 
     <div class="actions">
+        @if( $abandonedVehicles->count() > 0 )
+            <button class="btn bnt-sm btn-outline red btn-circle ajax-btn-auto-phase-2 tooltips" style="text-transform: capitalize"
+                    data-original-title="{{ implode(', ',$abandonedVehicles->pluck('inventory_id')->toArray()) }}"
+                    data-action="{{ route('inventory-ajax', 'autoPassToPhase2') }}">
+                {{ $abandonedVehicles->count() }} @lang('Vehicles to next phase')
+            </button>
+        @endif
+
         <button class="ajax-btn-car-process btn btn-circle btn-icon-only green tooltips"
                 data-modal="#ajax-modal-car-process"
                 data-action="{{ route('inventory-ajax','newInventory') }}"
@@ -31,7 +39,7 @@
             <th>@lang('Admission Reason')</th>
             <th>@lang('Plate')</th>
             <th>@lang('Type')</th>
-            <th>@lang('State')</th>
+            <th>@lang('Vehicle State')</th>
             <th>@lang('Actions')</th>
         </tr>
         </thead>
@@ -43,7 +51,7 @@
             @endphp
             <tr class="odd gradeX">
                 <td>{{ $inventory->id }}</td>
-                <td>{{ $inventory->date }}</td>
+                <td>{{ $inventoryProcess->date }}</td>
                 <td>
                     <span class="{{ $car->hasPendingJudicial()?'text-danger tooltips':'' }}" data-original-title="@lang('Whit pending judicial')">
                         {{ $inventory->admissionReason->name}}
@@ -52,7 +60,7 @@
                 <td class="uppercase">{{ $car->plate }}</td>
                 <td>{{ $car->type->name}}</td>
                 <td class="p-t-5">
-                    <span class="label {{ $car->state->color_class }}"> {{ $car->state->name}}</span>
+                    <span class="label span-full {{ $car->state->color_class }}"> {{ $car->state->name}}</span>
                 </td>
                 <td class="text-center">
                     <button data-action="{{ route('inventory-ajax','loadCarProcessView') }}?id={{ $inventoryProcess->id }}" class="ajax-btn-car-process tooltips btn btn-circle green-haze btn-outline sbold uppercase btn-xs"
@@ -70,7 +78,7 @@
 
 <script type="application/javascript">
     Inventory.initPhaseTable($('#inventory-phase-1-table'));
-
+    $('.tooltips').tooltip();
     $('.ajax-btn-test').click(function(){
         $.ajax({
             url: $(this).data('action'),

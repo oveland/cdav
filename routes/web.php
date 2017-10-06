@@ -39,6 +39,7 @@ Route::group(['middleware' => ['check-demo-user']], function () {
 
         Route::prefix('reports')->group(function(){
             Route::get('/phase-2','InventoryController@downloadReportPhase2')->name('reports-phase-2');
+            Route::get('/phase-3','InventoryController@downloadReportPhase3')->name('reports-phase-3');
         });
 
         /* For demo pages */

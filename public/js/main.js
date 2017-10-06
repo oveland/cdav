@@ -18,6 +18,8 @@ $(document).ready(function () {
             }
         },
         complete: function () {
+            $('.tooltip').remove();
+            $('.tooltips').tooltip();
             App.initComponents();
         }
     });

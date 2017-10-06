@@ -41,11 +41,11 @@
                     @endif
                 </td>
                 <td>{{ $inventory->id }}</td>
-                <td>{{ $inventory->date }}</td>
+                <td>{{ $inventoryProcess->date }}</td>
                 <td class="uppercase">{{ $car->plate }}</td>
                 <td>{{ $car->type->name }}</td>
                 <td class="p-t-5 ">
-                    <span class="label {{ $car->state->color_class }}"> {{ $car->state->name}}</span>
+                    <span class="label span-full {{ $car->state->color_class }}"> {{ $car->state->name}}</span>
                 </td>
                 <td class="{{ $inventoryProcess->started?'text-warning':'' }} hide">
                     {{ $inventoryProcess->started?__('Yes'):__('No') }}

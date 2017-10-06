@@ -10,6 +10,7 @@ use App\InventoryFile;
 use App\InventoryProcess;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Image;
 use PDF;
 use Mockery\Exception;
@@ -33,11 +34,25 @@ class InventoryController extends Controller
                 case 'newInventory':
                     return view('inventories.ajax.create_inventory');
                     break;
+                case 'autoPassToPhase2':
+                    $abandonedVehicles = InventoryProcess::abandoned()->get()->filter(function ($abandonedVehicle, $key) {
+                        $canPassToPhase2 = $abandonedVehicle->canPassToPhase2();
+                        if ($canPassToPhase2) {
+                            $abandonedVehicle->phase = 2;
+                            $abandonedVehicle->started = false;
+                        }
+                        return $canPassToPhase2 && $abandonedVehicle->save();
+                    });
+
+                    return $abandonedVehicles->count() . ' ' . __('vehicles passed to phase 2');
+                    break;
                 case 'processToPhase2':
                     $inventoryProcess = InventoryProcess::find($request->get('id'));
-                    $inventoryProcess->phase = 2;
-                    $inventoryProcess->started = false;
-                    $inventoryProcess->save();
+                    if($inventoryProcess->canPassToPhase2()){
+                        $inventoryProcess->phase = 2;
+                        $inventoryProcess->started = false;
+                        $inventoryProcess->save();
+                    }
                     return "success";
                     break;
                 case 'processToPhase3':
@@ -54,8 +69,11 @@ class InventoryController extends Controller
                     return view('inventories.ajax.inventory_detail', compact('inventoryProcess'));
                     break;
                 case 'loadPhase1Table':
+                    $abandonedVehicles = InventoryProcess::abandoned()->get()->filter(function ($abandonedVehicle, $key) {
+                        return $abandonedVehicle->canPassToPhase2();
+                    });
                     $inventoryProcesses = InventoryProcess::phase1()->get();
-                    return view('inventories.ajax.phase1-table', compact('inventoryProcesses'));
+                    return view('inventories.ajax.phase1-table', compact(['inventoryProcesses', 'abandonedVehicles']));
                     break;
                 case 'loadPhase2Table':
                     $inventoryProcesses = InventoryProcess::phase2()->get();
@@ -73,9 +91,24 @@ class InventoryController extends Controller
                     break;
                 case 'startNextEstrangementProcess':
                     $inventoryProcess = InventoryProcess::find($request->get('id'));
-                    $inventoryProcess->started = true;
+                    $inventoryProcess->notification_phase++;
+                    $inventoryProcess->date_notification_phase = Carbon::now();
+                    $inventoryProcess->observations = $request->get('observations');
                     $inventoryProcess->save();
                     return "success";
+                    break;
+                case 'responseToEstrangementProcess':
+                    $inventoryProcess = InventoryProcess::find($request->get('id'));
+                    $inventoryProcess->phase = 3;
+                    $inventoryProcess->started = false;
+                    $inventoryProcess->notification_phase = 0;
+                    $inventoryProcess->date_notification_phase = Carbon::now();
+                    $inventoryProcess->save();
+                    return "success";
+                    break;
+                case 'loadViewSendMailNotification':
+                    $inventoryProcess = InventoryProcess::find($request->get('id'));
+                    return view('inventories.ajax.inventory_send_mail_notification',compact('inventoryProcess'));
                     break;
             }
         }
@@ -153,7 +186,7 @@ class InventoryController extends Controller
      */
     public function getImageFile(InventoryFile $inventoryFile, Request $request)
     {
-        $image = Image::make($inventoryFile->getUrlFileImage());
+        $image = Image::make(Storage::url($inventoryFile->getUrlFileImage()));
         if ($request->get('thumbnail')) {
             $image->resize(200, 200);
         }
@@ -166,7 +199,7 @@ class InventoryController extends Controller
      */
     public function previewFile(InventoryFile $inventoryFile)
     {
-        return response()->file(\Storage::url($inventoryFile->url));
+        return response()->file(Storage::url($inventoryFile->url));
     }
 
     /**
@@ -208,6 +241,15 @@ class InventoryController extends Controller
 
 
         $pdf = PDF::loadView('inventories.reports.phase-2', ['inventoryProcesses' => $inventoryProcesses]);
-        return $pdf->download(__('Abandonment Declaration') .' - '.date('Y-m-d'). '.pdf');
+        return $pdf->download(__('Abandonment Declaration') . ' - ' . date('Y-m-d') . '.pdf');
+    }
+
+    public function downloadReportPhase3()
+    {
+        $inventoryProcesses = InventoryProcess::phase3()->started()->get();
+        //return view('inventories.reports.phase-2', compact('inventoryProcesses'));
+
+        $pdf = PDF::loadView('inventories.reports.phase-', ['inventoryProcesses' => $inventoryProcesses]);
+        return $pdf->download(__('Estrangement state') . ' - ' . date('Y-m-d') . '.pdf');
     }
 }

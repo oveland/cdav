@@ -19,7 +19,8 @@ class CreateInventoryProcessesTable extends Migration
             $table->integer('phase');
             $table->boolean('started')->default(false);
             $table->integer('notification_phase')->default(0);
-            $table->integer('date_notification_phase')->nullable();
+            $table->date('date_notification_phase')->nullable();
+            $table->string('observations',200)->nullable();
             $table->integer('inventory_id')->unsigned()->unique();
             $table->timestamps();
 

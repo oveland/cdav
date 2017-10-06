@@ -38,12 +38,10 @@
         <div id="tab-general" class="tab-pane fade active in">
             <div class="col-md-12">
                 <div class="mt-element-ribbon bg-grey-steel p-b-0 m-b-0">
-                <div class="ribbon ribbon-border-hor ribbon-clip ribbon-color-danger">
+                <div class="ribbon ribbon-border-hor ribbon-clip ribbon-color-{{ $phaseColor[$inventoryProcess->phase] }}" style="">
                     <div class="ribbon-sub ribbon-clip"></div>
                     @lang('Inventory'): <strong>{!! $inventory->id or 'None' !!}</strong>
-                </div>
-                <div class="pull-right m-r-40">
-                    <a href="javascript:return false;" class="btn btn-circle yellow-mint btn-outline" onclick="toastr['info']('@lang('Feature on development')', '@lang('Information')')">
+                    <a href="javascript:return false;" style="z-index: 10000" class="btn btn-sm btn-circle yellow-mint font-white btn-outline m-l-20" onclick="toastr['info']('@lang('Feature on development')', '@lang('Information')')">
                         <i class="fa fa-spin fa-cog"></i> @lang('Edit')
                     </a>
                 </div>
@@ -52,18 +50,78 @@
                     <strong class="p-4">{{ $inventoryProcess->phase  }}</strong>
                 </div>
 
+                <div class="row">
+                    <div class="col-md-12 m-t-25 p-0">
+                        <div class="col-md-8">
+                            <blockquote class="alert alert-{{ $phaseColor[$inventoryProcess->phase] }}">
+                                <div class="row static-info">
+                                    <div class="col-md-6 name">
+                                        <i class="fa fa-pencil-square-o m-r-10"></i> @lang('Admission Reason'):
+                                    </div>
+                                    <div class="col-md-6 value">{{ $inventory->admissionReason->name }}</div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-6 name">
+                                        <i class="fa fa-ticket m-r-10"></i> @lang('Judicial Pending'):
+                                    </div>
+                                    <div class="col-md-6 value">
+                                        {{ $pendingJudicialStr }}
+                                    </div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-6 name">
+                                        <i class="fa fa-calendar m-r-10"></i> @lang('Admission Date'):
+                                    </div>
+                                    <div class="col-md-6 value">{{ $inventoryProcess->date }}</div>
+                                </div>
+                            </blockquote>
+                        </div>
+                        @if( $inventoryProcess->phase == 2 )
+                            <div class="col-md-4">
+                                @if( $inventoryProcess->started )
+                                    <blockquote class="bg-blue-hoki bg-font-blue-hoki">
+                                        <div class="row static-info p-20">
+                                            <i class="fa-2x icon-ghost font-yellow-crusta faa-flash m-t-10 animated pull-left"></i>
+                                            <p class="font-white f-s-12 m-l-20">@lang('In abandonment state')</p>
+                                        </div>
+                                    </blockquote>
+                                @endif
+                            </div>
+                        @elseif( $inventoryProcess->phase == 3 )
+                            <div class="col-md-4">
+                                <blockquote class="bg-blue-hoki bg-font-blue-hoki">
+                                    <div class="row static-info p-20">
+                                        @if( $inventoryProcess->started )
+                                            <i class="fa-2x icon-tag font-red-flamingo faa-flash m-t-10 animated pull-left"></i>
+                                            <p class="font-white f-s-12 m-l-20">@lang('In estrangement state')</p>
+                                        @else
+                                            <div class="tooltips" data-original-title="{{ $inventoryProcess->observations }}">
+                                                @php($notificationPhase = $inventoryProcess->notification_phase)
+                                                @if($notificationPhase == 1)
+                                                    <i class="fa-2x icon-envelope font-blue faa-passing animated m-t-10 pull-left"></i>
+                                                    <p class="font-white f-s-12 m-l-20">@lang('Waiting response to personal notification')</p>
+                                                @elseif($notificationPhase == 2)
+                                                    <i class="fa-2x fa fa-bullhorn font-yellow-lemon faa-wrench animated m-t-10 pull-left"></i>
+                                                    <p class="font-white f-s-12 m-l-20">@lang('Waiting response to notification by notice')</p>
+                                                @endif
+                                            </div>
+                                        @endif
+                                    </div>
+                                </blockquote>
+                            </div>
+                        @endif
+                    </div>
 
-                <div class="row m-t-40">
                     <div class="col-md-6 col-sm-12">
-                        <div class="portlet box green-seagreen">
+                        <div class="portlet box bg-dark">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-car f-s-24"></i>@lang('Vehicle')
+                                    <i class="fa fa-car f-s-24"></i>@lang('Vehicle') - {{ $car->type->name }}
                                 </div>
                                 <div class="actions">
                                 </div>
                             </div>
-                            <div class="portlet-body">
+                            <div class="portlet-body" style="min-height: 200px;">
                                 <div class="row static-info">
                                     <div class="col-md-7 name"> @lang('Plate'): </div>
                                     <div class="col-md-5 value">{{ $car->plate }}</div>
@@ -98,28 +156,35 @@
                                         <span style="width: 100px" class="label {{ $car->state->color_class }}"> {{ $car->state->name}}</span>
                                     </div>
                                 </div>
-                                <hr>
+                            </div>
+                            <div class="p-10 text-muted">
                                 <div class="row static-info">
-                                    <div class="col-md-5 name"> @lang('Created at'): </div>
-                                    <div class="col-md-7 value">{{ $proprietary->created_at }}</div>
+                                    <div class="col-md-5 name">
+                                        <i class="fa fa-calendar"></i>
+                                        @lang('Created at'):
+                                    </div>
+                                    <div class="col-md-7 value">{{ $car->created_at }}</div>
                                 </div>
                                 <div class="row static-info">
-                                    <div class="col-md-5 name"> @lang('Updated at'): </div>
-                                    <div class="col-md-7 value">{{ $proprietary->updated_at }}</div>
+                                    <div class="col-md-5 name">
+                                        <i class="fa fa-calendar"></i>
+                                        @lang('Updated at'):
+                                    </div>
+                                    <div class="col-md-7 value">{{ $car->updated_at }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
-                        <div class="portlet box blue-ebonyclay">
+                        <div class="portlet box bg-dark">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-user f-s-24"></i>@lang('Proprietary')
+                                    <i class="fa fa-user f-s-24"></i> @lang('Proprietary')
                                 </div>
                                 <div class="actions">
                                 </div>
                             </div>
-                            <div class="portlet-body">
+                            <div class="portlet-body" style="min-height: 200px;">
                                 <div class="row static-info">
                                     <div class="col-md-5 name"> @lang('Identity') <strong>({{ $proprietary->identity_type }})</strong>: </div>
                                     <div class="col-md-7 value">{{ $proprietary->identity }}</div>
@@ -140,40 +205,24 @@
                                     <div class="col-md-5 name"> @lang('Email'): </div>
                                     <div class="col-md-7 value">{{ $proprietary->email }}</div>
                                 </div>
-                                <hr>
+                            </div>
+                            <div class="p-10 text-muted">
                                 <div class="row static-info">
-                                    <div class="col-md-5 name"> @lang('Created at'): </div>
+                                    <div class="col-md-5 name">
+                                        <i class="fa fa-calendar"></i>
+                                        @lang('Created at'):
+                                    </div>
                                     <div class="col-md-7 value">{{ $proprietary->created_at }}</div>
                                 </div>
                                 <div class="row static-info">
-                                    <div class="col-md-5 name"> @lang('Updated at'): </div>
+                                    <div class="col-md-5 name">
+                                        <i class="fa fa-calendar"></i>
+                                        @lang('Updated at'):
+                                    </div>
                                     <div class="col-md-7 value">{{ $proprietary->updated_at }}</div>
                                 </div>
                             </div>
                         </div>
-
-                        <blockquote class="alert alert-info">
-                            <div class="row static-info">
-                                <div class="col-md-6 name">
-                                    <i class="fa fa-ticket m-r-10"></i> @lang('Admission Reason'):
-                                </div>
-                                <div class="col-md-6 value">{{ $inventory->admissionReason->name }}</div>
-                            </div>
-                            <div class="row static-info">
-                                <div class="col-md-6 name">
-                                    <i class="fa fa-ticket m-r-10"></i> @lang('Judicial Pending'):
-                                </div>
-                                <div class="col-md-6 value">
-                                    {{ $pendingJudicialStr }}
-                                </div>
-                            </div>
-                            <div class="row static-info">
-                                <div class="col-md-6 name">
-                                    <i class="fa fa-calendar m-r-10"></i> @lang('Admission Date'):
-                                </div>
-                                <div class="col-md-6 value">{{ $inventory->date }}</div>
-                            </div>
-                        </blockquote>
                     </div>
                 </div>
             </div>
@@ -196,8 +245,8 @@
     <button class="btn btn-circle yellow-mint btn-outline sbold uppercase" type="button" data-dismiss="modal">@lang('Close')</button>
     @if($inventoryProcess->phase < 3 && $inventoryProcess->started)
         @php
-            $nextPhase = ($inventoryProcess->phase + 1);
-            $canNextPhase = $inventory->admissionReason->canPassToPhase2($car->pending_judicial);
+            $nextPhase = $inventoryProcess->phase + 1;
+            $canNextPhase = $inventoryProcess->canPassToPhase2();
         @endphp
         <button class="{{ $canNextPhase?'ajax-btn-process-next-phase':'' }} process popovers btn btn-circle sbold text-capitalize btn-{{ $phaseColor[$nextPhase] }} btn-outline {{ $canNextPhase?'':'disabled' }}"
                 @if($canNextPhase)
