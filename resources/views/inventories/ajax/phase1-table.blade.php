@@ -6,7 +6,7 @@
 
     <div class="actions">
         @if( $abandonedVehicles->count() > 0 )
-            <button class="btn bnt-sm btn-outline red btn-circle ajax-btn-auto-phase-2 tooltips" style="text-transform: capitalize"
+            <button class="btn bnt-sm btn-outline red btn-circle ajax-btn-auto-phase-2 tooltips" style="text-transform: capitalize" data-phase="1"
                     data-original-title="{{ implode(', ',$abandonedVehicles->pluck('inventory_id')->toArray()) }}"
                     data-action="{{ route('inventory-ajax', 'autoPassToPhase2') }}">
                 {{ $abandonedVehicles->count() }} @lang('Vehicles to next phase')
@@ -63,7 +63,7 @@
                     <span class="label span-full {{ $car->state->color_class }}"> {{ $car->state->name}}</span>
                 </td>
                 <td class="text-center">
-                    <button data-action="{{ route('inventory-ajax','loadCarProcessView') }}?id={{ $inventoryProcess->id }}" class="ajax-btn-car-process tooltips btn btn-circle green-haze btn-outline sbold uppercase btn-xs"
+                    <button data-action="{{ route('inventory-ajax','loadCarProcessDetail') }}?id={{ $inventoryProcess->id }}" class="ajax-btn-car-process tooltips btn btn-circle green-haze btn-outline sbold uppercase btn-xs"
                             data-modal="#ajax-modal-car-detail"
                             data-container="body" data-trigger="hover" data-placement="bottom" data-original-title="@lang('Details')">
                         <i class="fa fa-eye" aria-hidden="true"></i>

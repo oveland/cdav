@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3">
                         <div class="mt-overlay-6">
-                            <img src="{{ route('inventory-image-file',['inventoryFile'=> $inventoryFile->id]) }}?thumbnail=true"/>
+                            <img src="{{ route('inventory-file-image',['inventoryFile'=> $inventoryFile->id]) }}?thumbnail=true"/>
                             <div class="mt-overlay">
                                 <h2 style="text-transform: none !important;">{{ $inventoryFile->name }}</h2>
                                 <p>

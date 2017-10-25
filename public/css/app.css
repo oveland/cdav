@@ -1006,3 +1006,13 @@ select option:checked{
     margin-top:3px;
     font-weight:bold;
 }
+.btn-download{
+    text-transform: capitalize !important;
+}
+.phase-status-container{
+    border: 1px solid lightgray;
+    padding: 10px !important;
+    border-radius: 40px;
+    background: rgba(211, 211, 211, 0.14);
+    opacity: 0.8;
+}

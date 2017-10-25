@@ -28,6 +28,13 @@
     .bg-font-green-seagreen {
         color: #FFF!important;
     }
+
+    .bg-red{
+        background: #a31319 !important;
+    }
+    .bg-font-white {
+        color: #FFF!important;
+    }
     .label {
         text-transform: uppercase;
         padding: 2px 6px 4px;
@@ -66,6 +73,10 @@
     .property{
         font-weight: bold;
     }
+    h1.uppercase{
+        text-transform: uppercase;
+        font-size: 150% !important;
+    }
 </style>
 
 <div class="container-header">
@@ -77,13 +88,15 @@
     <div class="portlet-title">
         <div class="caption font-green-sharp">
             <i class="icon-ghost font-green-sharp" aria-hidden="true"></i>
+            <h1 class="caption-subject bold uppercase">@lang('In Estrangement')</h1>
+            <br>
             <h2 class="caption-subject bold uppercase">@lang('List vehicles in Estrangement state')</h2>
         </div>
     </div>
     <div>
         <table width="100%" id="inventory-phase-3-table" class="table table-striped table-bordered table-hover order-column table-lightsss">
             <thead>
-            <tr class="bg-green-seagreen bg-font-green-seagreen">
+            <tr class="bg-red bg-font-white">
                 <th>@lang('Number')</th>
                 <th width="20%">@lang('Plate')</th>
                 <th>@lang('Model')</th>
@@ -94,47 +107,9 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($inventoryProcesses->sortByDesc('id') as $inventoryProcess)
-                @php
-                    $inventory = $inventoryProcess->inventory;
-                    $car = $inventory->car;
-                    $proprietary = $car->proprietary;
-                @endphp
-                <tr class="vehicle-info">
-                    <td width="10%">{{ $inventory->id }}</td>
-                    <td width="20%">{{ $car->plate }}</td>
-                    <td width="10%">{{ $car->model }}</td>
-                    <td width="10%">{{ $car->color }}</td>
-                    <td width="10%">{{ $car->type->name }}</td>
-                    <td width="10%">
-                        <span class="label {{ $car->state->color_class }}"> {{ $car->state->name}}</span>
-                    </td>
-                    <td width="20%">{{ $inventory->date }}</td>
-                </tr>
-                <tr>
-                    <td style="padding-top: 0"><h4 class="title-proprietary" style="margin: 0">@lang('Proprietary'):</h4></td>
-                    <td colspan="7">
-                        <div class="container-body" style="margin: 0 !important;">
-                            <div class="portlet-body" style="margin: 0 !important;">
-                                <div class="row static-info">
-                                    <div class="col-md-5 name"> <span class="property">@lang('Identity'):</span> ({{ $proprietary->identity_type }}) {{ $proprietary->identity }}</div>
-                                </div>
-                                <div class="row static-info">
-                                    <div class="col-md-5 name"> <span class="property">@lang('Name'):</span> {{ $proprietary->name }}</div>
-                                </div>
-                            </div>
-                            <div class="portlet-body" style="margin: 0 !important;">
-                                <div class="row static-info">
-                                    <div class="col-md-5 name"> <span class="property">@lang('Phone'):</span> {{ $proprietary->phone }}</div>
-                                </div>
-                                <div class="row static-info">
-                                    <div class="col-md-5 name"> <span class="property">@lang('Email'):</span> {{ $proprietary->email }}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
+                @foreach($inventoryProcesses->sortByDesc('id') as $inventoryProcess)
+                    @include('inventories.reports._table_body',compact('$inventoryProcess'))
+                @endforeach
             </tbody>
         </table>
     </div>

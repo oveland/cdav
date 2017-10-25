@@ -1,8 +1,8 @@
 <div class="portlet light m-b-0">
     <div class="portlet-title">
         <div class="caption">
-            <i class="fa fa-bell font-red"></i>
-            <span class="caption-subject font-red bold uppercase">@lang('Send notification')</span>
+            <i class="fa fa-bell font-blue-madison faa-ring animated"></i>
+            <span class="caption-subject font-blue-madison bold uppercase">@lang('Classify to personal notification')</span>
         </div>
 
         <div class="actions pull-right">
@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="portlet-body">
-        <form action="{{ route('inventory-ajax','startNextEstrangementProcess') }}?id={{ $inventoryProcess->id }}" class="form-process">
+        <form action="{{ route('inventory-ajax','startNextNotificationPhaseProcess') }}?id={{ $inventoryProcess->id }}" class="form-process">
             <blockquote>
                 <p> @lang('Write a description for notification')</p>
                 <div class="mt-element-overlay">
@@ -26,11 +26,8 @@
 
             <div class="modal-footer col-md-12 m-t-10">
                 {{ csrf_field() }}
-                <button type="button" class="btn btn-circle yellow-mint btn-outline sbold uppercase" data-dismiss="modal">
-                    @lang('Cancel')
-                </button>
-                <button class="btn btn-circle yellow btn-outline sbold uppercase">
-                    <i class="fa fa-envelope"></i> @lang('Send')
+                <button class="btn btn-circle blue btn-outline sbold uppercase">
+                    <i class="fa fa-bell font-blue-madison faa-ring animated"></i> @lang('Classify')
                 </button>
             </div>
         </form>
@@ -53,14 +50,14 @@
             data: $(this).serialize(),
             type: 'GET',
             success: function (data) {
-                if (data === 'success') toastr['success']('@lang('Notificación enviada correctamente')', '@lang('Information')');
-                else toastr['warning']('@lang('No ha sido posible enviar la notificación')', '@lang('Ups')');
+                if (data === 'success') toastr['success']('@lang('Notification generated successfully')', '@lang('Information')');
+                else toastr['warning']('@lang('Oops, something went wrong!')', '@lang('Oops!')');
             },
             error: function () {
                 toastr['error']('@lang('Oops, something went wrong!')', '@lang('Error')');
             },
             complete: function () {
-                Inventory.loadPhaseContainer($('#phase-3').find('.phase-container'))
+                Inventory.loadPhaseContainer($('#phase-{{ $inventoryProcess->phase }}').find('.phase-container'));
                 formButton.removeClass('disabled');
                 App.unblockUI(container);
                 $('#ajax-modal-send-mail-notification').modal('hide');

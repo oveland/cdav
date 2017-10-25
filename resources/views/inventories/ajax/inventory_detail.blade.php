@@ -13,7 +13,7 @@
         </div>
 
         <div class="actions pull-right">
-            <a data-action="{{ route('inventory-ajax','loadCarProcessView') }}?id={{ $inventoryProcess->id }}" class="hide ajax-btn-car-process btn btn-circle btn-icon-only btn-default">
+            <a data-action="{{ route('inventory-ajax','loadCarProcessDetail') }}?id={{ $inventoryProcess->id }}" class="hide ajax-btn-car-process btn btn-circle btn-icon-only btn-default">
                 <i class="fa fa-refresh"></i>
             </a>
             <a class="btn btn-circle red-mint btn-outline sbold btn-icon-only" data-dismiss="modal" title="@lang('Close')">
@@ -36,7 +36,7 @@
     </div>
     <div class="portlet-body tab-content row md-shadow-none">
         <div id="tab-general" class="tab-pane fade active in">
-            <div class="col-md-12">
+            <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="mt-element-ribbon bg-grey-steel p-b-0 m-b-0">
                 <div class="ribbon ribbon-border-hor ribbon-clip ribbon-color-{{ $phaseColor[$inventoryProcess->phase] }}" style="">
                     <div class="ribbon-sub ribbon-clip"></div>
@@ -51,8 +51,8 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12 m-t-25 p-0">
-                        <div class="col-md-8">
+                    <div class="col-md-12 col-sm-12 col-xs-12 m-t-25 p-0">
+                        <div class="col-md-8 col-sm-12 col-xs-12">
                             <blockquote class="alert alert-{{ $phaseColor[$inventoryProcess->phase] }}">
                                 <div class="row static-info">
                                     <div class="col-md-6 name">
@@ -76,40 +76,35 @@
                                 </div>
                             </blockquote>
                         </div>
-                        @if( $inventoryProcess->phase == 2 )
-                            <div class="col-md-4">
-                                @if( $inventoryProcess->started )
-                                    <blockquote class="bg-blue-hoki bg-font-blue-hoki">
-                                        <div class="row static-info p-20">
+
+                        <div class="col-md-4 col-sm-12">
+                            <blockquote class="bg-blue-hoki bg-font-blue-hoki">
+                                <div class="row static-info p-20">
+                                    @if( $inventoryProcess->started )
+                                        @if( $inventoryProcess->isInAbandonedState() )
                                             <i class="fa-2x icon-ghost font-yellow-crusta faa-flash m-t-10 animated pull-left"></i>
                                             <p class="font-white f-s-12 m-l-20">@lang('In abandonment state')</p>
-                                        </div>
-                                    </blockquote>
-                                @endif
-                            </div>
-                        @elseif( $inventoryProcess->phase == 3 )
-                            <div class="col-md-4">
-                                <blockquote class="bg-blue-hoki bg-font-blue-hoki">
-                                    <div class="row static-info p-20">
-                                        @if( $inventoryProcess->started )
+                                        @elseif( $inventoryProcess->isInEstrangementState() )
                                             <i class="fa-2x icon-tag font-red-flamingo faa-flash m-t-10 animated pull-left"></i>
                                             <p class="font-white f-s-12 m-l-20">@lang('In estrangement state')</p>
                                         @else
-                                            <div class="tooltips" data-original-title="{{ $inventoryProcess->observations }}">
-                                                @php($notificationPhase = $inventoryProcess->notification_phase)
-                                                @if($notificationPhase == 1)
-                                                    <i class="fa-2x icon-envelope font-blue faa-passing animated m-t-10 pull-left"></i>
-                                                    <p class="font-white f-s-12 m-l-20">@lang('Waiting response to personal notification')</p>
-                                                @elseif($notificationPhase == 2)
-                                                    <i class="fa-2x fa fa-bullhorn font-yellow-lemon faa-wrench animated m-t-10 pull-left"></i>
-                                                    <p class="font-white f-s-12 m-l-20">@lang('Waiting response to notification by notice')</p>
-                                                @endif
-                                            </div>
+                                            <i class="fa-2x icon-layers font-green-jungle faa-flash m-t-10 animated pull-left"></i>
+                                            <p class="font-white f-s-12 m-l-20">@lang('In initial inventory register')</p>
                                         @endif
-                                    </div>
-                                </blockquote>
-                            </div>
-                        @endif
+                                    @else
+                                        <div class="tooltips" data-original-title="{{ $inventoryProcess->observations }}">
+                                            @if($inventoryProcess->withPersonalNotification())
+                                                <i class="fa-2x icon-envelope font-blue faa-passing animated m-t-10 pull-left"></i>
+                                                <p class="font-white f-s-12 m-l-20">@lang('Waiting response to personal notification')</p>
+                                            @elseif($inventoryProcess->withNoticeNotification())
+                                                <i class="fa-2x fa fa-bullhorn font-yellow-lemon faa-wrench animated m-t-10 pull-left"></i>
+                                                <p class="font-white f-s-12 m-l-20">@lang('Waiting response to notification by notice')</p>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                            </blockquote>
+                        </div>
                     </div>
 
                     <div class="col-md-6 col-sm-12">
@@ -243,7 +238,7 @@
 </div>
 <div class="modal-footer col-md-12 m-t-10">
     <button class="btn btn-circle yellow-mint btn-outline sbold uppercase" type="button" data-dismiss="modal">@lang('Close')</button>
-    @if($inventoryProcess->phase < 3 && $inventoryProcess->started)
+    @if($inventoryProcess->phase < \App\InventoryProcess::ESTRANGEMENT_PHASE && $inventoryProcess->started)
         @php
             $nextPhase = $inventoryProcess->phase + 1;
             $canNextPhase = $inventoryProcess->canPassToPhase2();

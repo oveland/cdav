@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess phase3()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess started()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereDateNotificationPhase($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereInventoryId($value)
@@ -36,9 +35,20 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property string|null $observations
  * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereObservations($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess notice()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess personal()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\InventoryProcess whereDate($value)
  */
 class InventoryProcess extends Model
 {
+    const INIT_INVENTORY_PHASE = 1;
+    const ABANDONMENT_PHASE = 2;
+    const ESTRANGEMENT_PHASE = 3;
+
+    const INIT_NOTIFICATION_PHASE = 0;
+    const PERSONAL_NOTIFICATION_PHASE = 1;
+    const NOTICE_NOTIFICATION_PHASE = 2;
+
     protected function getDateFormat()
     {
         return config('app.date_format');
@@ -61,14 +71,14 @@ class InventoryProcess extends Model
     }
 
     /**
-     * Scope a query to Inventories phase 1.
+     * Scope a query to Inventories phase InitInventory.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePhase1($query)
     {
-        return $query->where('phase', 1);
+        return $query->where('phase', $this::INIT_INVENTORY_PHASE);
     }
 
     /**
@@ -79,7 +89,7 @@ class InventoryProcess extends Model
      */
     public function scopePhase2($query)
     {
-        return $query->where('phase', 2);
+        return $query->where('phase', $this::ABANDONMENT_PHASE);
     }
 
     /**
@@ -90,7 +100,29 @@ class InventoryProcess extends Model
      */
     public function scopePhase3($query)
     {
-        return $query->where('phase', 3);
+        return $query->where('phase', $this::ESTRANGEMENT_PHASE);
+    }
+
+    /**
+     * Scope a query to Inventories with personal notification.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePersonal($query)
+    {
+        return $query->where('notification_phase', $this::PERSONAL_NOTIFICATION_PHASE);
+    }
+
+    /**
+     * Scope a query to Inventories with notification by notice.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNotice($query)
+    {
+        return $query->where('notification_phase', $this::NOTICE_NOTIFICATION_PHASE);
     }
 
     /**
@@ -112,8 +144,57 @@ class InventoryProcess extends Model
      */
     public function scopeAbandoned($query)
     {
-        return $query->where('phase', 1)->where('date', '<', Carbon::now()->subYears(1));
+        return $query->where('phase', $this::INIT_INVENTORY_PHASE)->where('date', '<', Carbon::now()->subYears(1));
     }
+
+    /**
+     * @return bool
+     */
+    public function isStartAbandonedState()
+    {
+        return $this->phase == $this::ABANDONMENT_PHASE && !$this->started;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInAbandonedState()
+    {
+        return $this->phase == $this::ABANDONMENT_PHASE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEndAbandonedState()
+    {
+        return $this->phase == $this::ABANDONMENT_PHASE && $this->started;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStartEstrangementState()
+    {
+        return $this->phase == $this::ESTRANGEMENT_PHASE && !$this->started;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInEstrangementState()
+    {
+        return $this->phase == $this::ESTRANGEMENT_PHASE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEndEstrangementState()
+    {
+        return $this->phase == $this::ESTRANGEMENT_PHASE && $this->started;
+    }
+
 
     public function isContravention()
     {
@@ -123,5 +204,28 @@ class InventoryProcess extends Model
     public function canPassToPhase2()
     {
         return !$this->inventory->car->pending_judicial && $this->isContravention();
+    }
+
+    public function setStateToInitialPhase()
+    {
+        $this->started = false;
+        $this->notification_phase = $this::INIT_NOTIFICATION_PHASE;
+        $this->date_notification_phase = Carbon::now();
+        return $this;
+    }
+
+    public function withOutNotification()
+    {
+        return $this->notification_phase == $this::INIT_NOTIFICATION_PHASE;
+    }
+
+    public function withPersonalNotification()
+    {
+        return $this->notification_phase == $this::PERSONAL_NOTIFICATION_PHASE;
+    }
+
+    public function withNoticeNotification()
+    {
+        return $this->notification_phase == $this::NOTICE_NOTIFICATION_PHASE;
     }
 }

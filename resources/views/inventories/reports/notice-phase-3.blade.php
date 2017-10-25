@@ -28,6 +28,13 @@
     .bg-font-green-seagreen {
         color: #FFF!important;
     }
+
+    .bg-red{
+        background: #a31319 !important;
+    }
+    .bg-font-white {
+        color: #FFF!important;
+    }
     .label {
         text-transform: uppercase;
         padding: 2px 6px 4px;
@@ -73,7 +80,7 @@
 </style>
 
 <div class="container-header">
-    <h1>@lang('CDAV - Patios')</h1>
+    <h1>@lang('CDAV Patios') | @lang('Notice Notification')</h1>
     <hr>
 </div>
 
@@ -81,15 +88,15 @@
     <div class="portlet-title">
         <div class="caption font-green-sharp">
             <i class="icon-ghost font-green-sharp" aria-hidden="true"></i>
-            <h1 class="caption-subject bold uppercase">@lang('Abandonment state')</h1>
+            <h1 class="caption-subject bold uppercase">@lang('Estrangement Process')</h1>
             <br>
-            <h2 class="caption-subject bold uppercase">@lang('List vehicles in Abandonment Declaration')</h2>
+            <h2 class="caption-subject bold uppercase">@lang('List vehicles for Estrangement state')</h2>
         </div>
     </div>
     <div>
-        <table width="100%" id="inventory-phase-2-table" class="table table-striped table-bordered table-hover order-column table-lightsss">
+        <table width="100%" id="inventory-phase-3-table" class="table table-striped table-bordered table-hover order-column table-lightsss">
             <thead>
-            <tr class="bg-green-seagreen bg-font-green-seagreen">
+            <tr class="bg-red bg-font-white">
                 <th>@lang('Number')</th>
                 <th width="20%">@lang('Plate')</th>
                 <th>@lang('Model')</th>

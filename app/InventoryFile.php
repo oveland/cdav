@@ -90,7 +90,7 @@ class InventoryFile extends Model
 
     public function getUrlFileImage()
     {
-        if ($this->isImage()) return $this->url;
+        if ($this->isImage()) return \Storage::url($this->url);
         else if ($this->isPDF()) return 'img/pdf.jpg';
         else if ($this->isWord()) return 'img/doc.jpg';
         else if ($this->isExcel()) return 'img/xls.jpg';

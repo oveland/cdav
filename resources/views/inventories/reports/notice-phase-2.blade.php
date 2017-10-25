@@ -73,7 +73,7 @@
 </style>
 
 <div class="container-header">
-    <h1>@lang('CDAV - Patios')</h1>
+    <h1>@lang('CDAV Patios') | @lang('Notice Notification')</h1>
     <hr>
 </div>
 
@@ -81,9 +81,9 @@
     <div class="portlet-title">
         <div class="caption font-green-sharp">
             <i class="icon-ghost font-green-sharp" aria-hidden="true"></i>
-            <h1 class="caption-subject bold uppercase">@lang('Abandonment state')</h1>
+            <h1 class="caption-subject bold uppercase">@lang('Abandonment Declaration')</h1>
             <br>
-            <h2 class="caption-subject bold uppercase">@lang('List vehicles in Abandonment Declaration')</h2>
+            <h2 class="caption-subject bold uppercase">@lang('List vehicles for Abandonment Declaration')</h2>
         </div>
     </div>
     <div>

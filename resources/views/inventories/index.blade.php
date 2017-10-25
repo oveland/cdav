@@ -222,7 +222,7 @@
                     $modal.modal('show');
                 });
             }).on('click', '.ajax-btn-auto-phase-2', function () {
-                var el = $('#phase-1').find('.phase-container');
+                var el = $('#phase-' + $(this).data('phase')).find('.phase-container');
                 App.blockUI({
                     target: el,
                     animate: true

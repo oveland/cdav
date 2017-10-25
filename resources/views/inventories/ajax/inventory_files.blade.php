@@ -23,7 +23,7 @@
             <div id="{{ $idPortfolio }}" class="cbp">
                 @foreach($inventoryFiles as $inventoryFile)
                     <div class="cbp-item identity inventory-{{ $inventoryFile->getCategory() }}" style="width: 50px !important;">
-                        <a href="{{ route('inventory-image-file',['inventoryFile'=> $inventoryFile->id]) }}" class="cbp-caption cbp-lightbox"
+                        <a href="{{ route('inventory-file-image',['inventoryFile'=> $inventoryFile->id]) }}" class="cbp-caption cbp-lightbox"
                            data-title="
                                     <strong>@lang('Name'): </strong>{{ $inventoryFile->name }}<br><strong>@lang('Created at'): </strong>{{ $inventoryFile->created_at }}
                                    <div class='m-t-5 m-b-10 image-actions image-actions-preview pull-right'>
@@ -41,7 +41,7 @@
                                     </div>"
                         >
                             <div class="cbp-caption-defaultWrap">
-                                <img src="{{ route('inventory-image-file',['inventoryFile'=> $inventoryFile->id]) }}?thumbnail=true" alt="">
+                                <img src="{{ route('inventory-file-image',['inventoryFile'=> $inventoryFile->id]) }}?thumbnail=true" alt="">
                             </div>
                             <div class="cbp-caption-activeWrap">
                                 <div class="cbp-l-caption-alignLeft">

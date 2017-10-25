@@ -6,13 +6,9 @@ use App\CarsInventory;
 use App\CarsProprietary;
 use App\Http\Requests\StoreInventory;
 use App\Inventory;
-use App\InventoryFile;
 use App\InventoryProcess;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Image;
-use PDF;
 use Mockery\Exception;
 
 class InventoryController extends Controller
@@ -30,44 +26,18 @@ class InventoryController extends Controller
     public function ajax($action, Request $request)
     {
         if ($request->isXmlHttpRequest() || true) {
+            /* **** ACTIONS RETURNING A VIEW TEMPLATE **** */
             switch ($action) {
+                /* Load view for create a new inventory */
                 case 'newInventory':
                     return view('inventories.ajax.create_inventory');
                     break;
-                case 'autoPassToPhase2':
-                    $abandonedVehicles = InventoryProcess::abandoned()->get()->filter(function ($abandonedVehicle, $key) {
-                        $canPassToPhase2 = $abandonedVehicle->canPassToPhase2();
-                        if ($canPassToPhase2) {
-                            $abandonedVehicle->phase = 2;
-                            $abandonedVehicle->started = false;
-                        }
-                        return $canPassToPhase2 && $abandonedVehicle->save();
-                    });
-
-                    return $abandonedVehicles->count() . ' ' . __('vehicles passed to phase 2');
-                    break;
-                case 'processToPhase2':
-                    $inventoryProcess = InventoryProcess::find($request->get('id'));
-                    if($inventoryProcess->canPassToPhase2()){
-                        $inventoryProcess->phase = 2;
-                        $inventoryProcess->started = false;
-                        $inventoryProcess->save();
-                    }
-                    return "success";
-                    break;
-                case 'processToPhase3':
-                    $inventoryProcess = InventoryProcess::find($request->get('id'));
-                    $inventoryProcess->phase = 3;
-                    $inventoryProcess->started = false;
-                    $inventoryProcess->notification_phase = 0;
-                    $inventoryProcess->date_notification_phase = Carbon::now();
-                    $inventoryProcess->save();
-                    return "success";
-                    break;
-                case 'loadCarProcessView':
+                /* Load inventory detail view */
+                case 'loadCarProcessDetail':
                     $inventoryProcess = InventoryProcess::find($request->get('id'));
                     return view('inventories.ajax.inventory_detail', compact('inventoryProcess'));
                     break;
+                /* Load phase 1 table */
                 case 'loadPhase1Table':
                     $abandonedVehicles = InventoryProcess::abandoned()->get()->filter(function ($abandonedVehicle, $key) {
                         return $abandonedVehicle->canPassToPhase2();
@@ -75,21 +45,69 @@ class InventoryController extends Controller
                     $inventoryProcesses = InventoryProcess::phase1()->get();
                     return view('inventories.ajax.phase1-table', compact(['inventoryProcesses', 'abandonedVehicles']));
                     break;
+                /* Load phase 2 table */
                 case 'loadPhase2Table':
                     $inventoryProcesses = InventoryProcess::phase2()->get();
                     return view('inventories.ajax.phase2-table', compact('inventoryProcesses'));
                     break;
+                /* Load phase 3 table */
                 case 'loadPhase3Table':
                     $inventoryProcesses = InventoryProcess::phase3()->get();
                     return view('inventories.ajax.phase3-table', compact('inventoryProcesses'));
                     break;
-                case 'startInventoryPhaseProcess':
+                /* Load View for notification description */
+                case 'loadViewDescriptionNotification':
                     $inventoryProcess = InventoryProcess::find($request->get('id'));
-                    $inventoryProcess->started = true;
-                    $inventoryProcess->save();
+                    $viewName = 'inventories.ajax.generate_personal_notification';
+                    if ($inventoryProcess->withPersonalNotification()) $viewName = 'inventories.ajax.generate_notice_notification';
+                    return view($viewName, compact('inventoryProcess'));
+                    break;
+            }
+
+            /* **** ACTIONS RETURNING A SIMPLE RESPONSE **** */
+            switch ($action) {
+                /* Process inventories to phase 2 if your date created is a year ago */
+                case 'autoPassToPhase2':
+                    $abandonedVehicles = InventoryProcess::abandoned()->get()->filter(function ($abandonedVehicle, $key) {
+                        $canPassToPhase2 = $abandonedVehicle->canPassToPhase2();
+                        if ($canPassToPhase2) {
+                            $abandonedVehicle->phase = InventoryProcess::ABANDONMENT_PHASE;
+                            $abandonedVehicle->started = false;
+                        }
+                        return $canPassToPhase2 && $abandonedVehicle->save();
+                    });
+
+                    return $abandonedVehicles->count() . ' ' . __('vehicles passed to phase 2');
+                    break;
+
+                /* Set Abandonment State */
+                case 'setAbandonmentstate':
+                    $abandonedVehicles = InventoryProcess::isEndAbandonedState()->get()->filter(function ($abandonedVehicle, $key) {
+                        $abandonedVehicle->phase = InventoryProcess::ESTRANGEMENT_PHASE;
+                        $abandonedVehicle->started = false;
+                        return $abandonedVehicle->save();
+                    });
+
+                    return $abandonedVehicles->count() . ' ' . __('vehicles passed to phase 3');
+                    break;
+                /* Process inventory to phase 2 */
+                case 'processToPhase2':
+                    $inventoryProcess = InventoryProcess::find($request->get('id'));
+                    if ($inventoryProcess->canPassToPhase2()) {
+                        $inventoryProcess->phase = InventoryProcess::ABANDONMENT_PHASE;
+                        $inventoryProcess->setStateToInitialPhase()->save();
+                    }
                     return "success";
                     break;
-                case 'startNextEstrangementProcess':
+                /* Process inventory to phase 3 */
+                case 'processToPhase3':
+                    $inventoryProcess = InventoryProcess::find($request->get('id'));
+                    $inventoryProcess->phase = InventoryProcess::ESTRANGEMENT_PHASE;
+                    $inventoryProcess->setStateToInitialPhase()->save();
+                    return "success";
+                    break;
+                /* Start Next Phase for Notification Process */
+                case 'startNextNotificationPhaseProcess':
                     $inventoryProcess = InventoryProcess::find($request->get('id'));
                     $inventoryProcess->notification_phase++;
                     $inventoryProcess->date_notification_phase = Carbon::now();
@@ -97,18 +115,18 @@ class InventoryController extends Controller
                     $inventoryProcess->save();
                     return "success";
                     break;
-                case 'responseToEstrangementProcess':
+                /* Response to Sub-Phase Process */
+                case 'responseToNotificationPhaseProcess':
                     $inventoryProcess = InventoryProcess::find($request->get('id'));
-                    $inventoryProcess->phase = 3;
-                    $inventoryProcess->started = false;
-                    $inventoryProcess->notification_phase = 0;
-                    $inventoryProcess->date_notification_phase = Carbon::now();
-                    $inventoryProcess->save();
+                    $inventoryProcess->setStateToInitialPhase()->save();
                     return "success";
                     break;
-                case 'loadViewSendMailNotification':
+                /* Start Inventory Phase Process */
+                case 'startInventoryPhaseProcess':
                     $inventoryProcess = InventoryProcess::find($request->get('id'));
-                    return view('inventories.ajax.inventory_send_mail_notification',compact('inventoryProcess'));
+                    $inventoryProcess->started = true;
+                    $inventoryProcess->save();
+                    return "success";
                     break;
             }
         }
@@ -134,7 +152,7 @@ class InventoryController extends Controller
             $car->inventory()->associate($inventory);
             $proprietary->car()->save($car);
 
-            $inventory->inventoryProcesses()->save(new InventoryProcess(['phase' => 1, 'started' => true]));
+            $inventory->inventoryProcesses()->save(new InventoryProcess(['phase' => InventoryProcess::INIT_INVENTORY_PHASE, 'started' => true]));
 
             $response->message = __('Inventory created successfully');
         } catch (Exception $e) {
@@ -143,113 +161,5 @@ class InventoryController extends Controller
         }
 
         return response()->json($response);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Inventory $inventory
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
-     * @internal param CarsInventory $carsInventory
-     */
-    public function storeFiles(Inventory $inventory, Request $request)
-    {
-        $file = $request->file('file');
-        if ($file && $file->isValid()) {
-            $path = $file->store('inventory/files/' . $inventory->id, 'public');
-            $inventory->files()->save(new InventoryFile([
-                'name' => $file->getClientOriginalName(),
-                'type' => $file->getMimeType(),
-                'url' => $path,
-            ]));
-        }
-
-        return response()->json([
-            'success' => true
-        ]);
-    }
-
-    /**
-     * @param Inventory $inventory
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function refreshPanelFiles(Inventory $inventory)
-    {
-        return view('inventories.ajax.inventory_files', compact('inventory'));
-    }
-
-    /**
-     * @param InventoryFile $inventoryFile
-     * @param Request $request
-     * @return mixed
-     */
-    public function getImageFile(InventoryFile $inventoryFile, Request $request)
-    {
-        $image = Image::make(Storage::url($inventoryFile->getUrlFileImage()));
-        if ($request->get('thumbnail')) {
-            $image->resize(200, 200);
-        }
-        return $image->response('jpg');
-    }
-
-    /**
-     * @param InventoryFile $inventoryFile
-     * @return mixed
-     */
-    public function previewFile(InventoryFile $inventoryFile)
-    {
-        return response()->file(Storage::url($inventoryFile->url));
-    }
-
-    /**
-     * @param InventoryFile $inventoryFile
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function downloadFile(InventoryFile $inventoryFile)
-    {
-        return response()->download(\Storage::url($inventoryFile->url));
-    }
-
-    /**
-     * @param InventoryFile $inventoryFile
-     * @return string
-     */
-    public function deleteFormFile(InventoryFile $inventoryFile)
-    {
-        return view('inventories.ajax.inventory_delete_files', compact('inventoryFile'));
-    }
-
-    /**
-     * @param InventoryFile $inventoryFile
-     * @return string
-     */
-    public function deleteFile(InventoryFile $inventoryFile)
-    {
-        try {
-            $inventoryFile->delete();
-            return 'success';
-        } catch (Exception $e) {
-            return 'error';
-        }
-    }
-
-    public function downloadReportPhase2()
-    {
-        $inventoryProcesses = InventoryProcess::phase2()->started()->get();
-        //return view('inventories.reports.phase-2', compact('inventoryProcesses'));
-
-
-        $pdf = PDF::loadView('inventories.reports.phase-2', ['inventoryProcesses' => $inventoryProcesses]);
-        return $pdf->download(__('Abandonment Declaration') . ' - ' . date('Y-m-d') . '.pdf');
-    }
-
-    public function downloadReportPhase3()
-    {
-        $inventoryProcesses = InventoryProcess::phase3()->started()->get();
-        //return view('inventories.reports.phase-2', compact('inventoryProcesses'));
-
-        $pdf = PDF::loadView('inventories.reports.phase-', ['inventoryProcesses' => $inventoryProcesses]);
-        return $pdf->download(__('Estrangement state') . ' - ' . date('Y-m-d') . '.pdf');
     }
 }
